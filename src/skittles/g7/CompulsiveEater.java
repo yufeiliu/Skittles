@@ -18,6 +18,7 @@ public class CompulsiveEater extends Player
 	private boolean discovery;
 	private int turnsEatenSame;
 	private int lastEatInv;
+	private int colorsRemaining;
 	
 	//===== EVERYTHING BELOW CAME FROM DumpPlayer ====
 	private int[] aintInHand;
@@ -40,6 +41,14 @@ public class CompulsiveEater extends Player
 	@Override
 	public void eat( int[] aintTempEat )
 	{
+		int eatIndex = scanForLeastValuable();
+		//eat all of last color
+		if(colorsRemaining == 1){
+			aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
+			aintInHand[ eatIndex ] = 0;
+			return;
+		}
+		//try to eat one of every color
 		while(discovery && intLastEatIndex < intColorNum - 1){
 			intLastEatIndex++;
 			if(aintInHand[intLastEatIndex] == 0){
@@ -53,7 +62,6 @@ public class CompulsiveEater extends Player
 		}
 		discovery = false;
 		
-		int eatIndex = scanForLeastValuable();
 		
 		//TODO: Test threshold
 		if(adblTastes[eatIndex] > .5 && turnsEatenSame > 3){
@@ -65,7 +73,7 @@ public class CompulsiveEater extends Player
 			aintInHand[ eatIndex ]--;
 		}
 		intLastEatIndex = eatIndex;
-		intLastEatNum = aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
+		intLastEatNum = aintTempEat[ eatIndex ];
 		
 		if(eatIndex == intLastEatIndex)
 			turnsEatenSame++;
@@ -76,9 +84,12 @@ public class CompulsiveEater extends Player
 	private int scanForLeastValuable(){
 		double minTasteValue = 2;
 		int minTasteIndex = 0;
+		colorsRemaining = intColorNum;
 		for(int i = 0; i < intColorNum; i++){
-			if(aintInHand[i] == 0)
+			if(aintInHand[i] == 0){
+				colorsRemaining--;
 				continue;
+			}
 			if(adblTastes[i] < minTasteValue){
 				minTasteValue = adblTastes[i]; 
 				minTasteIndex = i;
