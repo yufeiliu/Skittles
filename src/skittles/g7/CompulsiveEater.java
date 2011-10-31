@@ -12,6 +12,9 @@ public class CompulsiveEater extends Player
 	private OfferEvaluator offerEval;
 	private OfferGenerator offerGen;
 	private int turnCounter;
+	private boolean discovery;
+	private int turnsEatenSame;
+	private int lastEatInv;
 	
 	//===== EVERYTHING BELOW CAME FROM DumpPlayer ====
 	private int[] aintInHand;
@@ -34,50 +37,58 @@ public class CompulsiveEater extends Player
 	@Override
 	public void eat( int[] aintTempEat )
 	{
-		int intMaxColorIndex = -1;
-		int intMaxColorNum = 0;
-		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
-		{
-			if ( aintInHand[ intColorIndex ] > intMaxColorNum )
-			{
-				intMaxColorNum = aintInHand[ intColorIndex ];
-				intMaxColorIndex = intColorIndex;
+		while(discovery && intLastEatIndex < intColorNum - 1){
+			intLastEatIndex++;
+			if(aintInHand[intLastEatIndex] == 0){
+				intLastEatIndex++;
+				continue;
+			}
+			aintInHand[intLastEatIndex]--;
+			aintTempEat[intLastEatIndex] = 1;
+			intLastEatNum = 1;
+			return;
+		}
+		discovery = false;
+		
+		int eatIndex = scanForLeastValuable();
+		
+		//TODO: Test threshold
+		if(adblTastes[eatIndex] > .5 && turnsEatenSame > 3){
+			aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
+			aintInHand[ eatIndex ] = 0;
+		}
+		else{
+			aintTempEat[ eatIndex ] = 1;
+			aintInHand[ eatIndex ]--;
+		}
+		intLastEatIndex = eatIndex;
+		intLastEatNum = aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
+		
+		if(eatIndex == intLastEatIndex)
+			turnsEatenSame++;
+		else
+			turnsEatenSame = 1;
+	}
+	
+	private int scanForLeastValuable(){
+		double minTasteValue = 2;
+		int minTasteIndex = 0;
+		for(int i = 0; i < intColorNum; i++){
+			if(aintInHand[i] == 0)
+				continue;
+			if(adblTastes[i] < minTasteValue){
+				minTasteValue = adblTastes[i]; 
+				minTasteIndex = i;
 			}
 		}
-		aintTempEat[ intMaxColorIndex ] = intMaxColorNum;
-		aintInHand[ intMaxColorIndex ] = 0;
-		intLastEatIndex = intMaxColorIndex;
-		intLastEatNum = intMaxColorNum;
+		return minTasteIndex;
 	}
 	
 	@Override
 	public void offer( Offer offTemp )
 	{
-		int intMaxColorIndex = 0;
-		int intMaxColorNum = 0;
-		int intMinColorIndex = 0;
-		int intMinColorNum = Integer.MAX_VALUE;
-		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
-		{
-			if ( aintInHand[ intColorIndex ] > intMaxColorNum )
-			{
-				intMaxColorNum = aintInHand[ intColorIndex ];
-				intMaxColorIndex = intColorIndex;
-			}
-			if ( aintInHand[ intColorIndex ] > 0 && aintInHand[ intColorIndex ] < intMinColorNum )
-			{
-				intMinColorNum = aintInHand[ intColorIndex ];
-				intMinColorIndex = intColorIndex;
-			}
-		}
-		int[] aintOffer = new int[ intColorNum ];
-		int[] aintDesire = new int[ intColorNum ];
-		if ( intMinColorIndex != intMaxColorIndex )
-		{
-			aintOffer[ intMinColorIndex ] = intMinColorNum;
-			aintDesire[ intMaxColorIndex ] = intMinColorNum;
-		}
-		offTemp.setOffer( aintOffer, aintDesire );
+		Offer ourOffer = offerGen.getOffer();
+		offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
 	}
 
 	@Override
@@ -107,26 +118,7 @@ public class CompulsiveEater extends Player
 	@Override
 	public Offer pickOffer(Offer[] aoffCurrentOffers) 
 	{
-		Offer offReturn = null;
-		for ( Offer offTemp : aoffCurrentOffers )
-		{
-			if ( offTemp.getOfferedByIndex() == intPlayerIndex || offTemp.getOfferLive() == false )
-				continue;
-			int[] aintDesire = offTemp.getDesire();
-			if ( checkEnoughInHand( aintDesire ) )
-			{
-				offReturn = offTemp;
-				aintDesire = offReturn.getDesire();
-				int[] aintOffer = offReturn.getOffer();
-				for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
-				{
-					aintInHand[ intColorIndex ] += aintOffer[ intColorIndex ] - aintDesire[ intColorIndex ];
-				}
-				break;
-			}
-		}
-
-		return offReturn;
+		return offerEval.getBestOffer(aoffCurrentOffers);
 	}
 
 	@Override
@@ -153,7 +145,10 @@ public class CompulsiveEater extends Player
 		this.strClassName = strClassName;
 		this.aintInHand = aintInHand;
 		intColorNum = aintInHand.length;
+		turnsEatenSame = 0;
+		lastEatInv = 0;
 		dblHappiness = 0;
+		discovery = true;
 		adblTastes = new double[ intColorNum ];
 		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
 		{
@@ -203,5 +198,9 @@ public class CompulsiveEater extends Player
 	
 	public double[] getPreferences() {
 		return adblTastes;
+	}
+	
+	public int[] getAIntInHand() {
+		return aintInHand;
 	}
 }
