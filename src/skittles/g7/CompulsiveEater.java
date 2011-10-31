@@ -136,7 +136,14 @@ public class CompulsiveEater extends Player
 	{
 		prefEval.examineIncomeOffers(aoffCurrentOffers);
 		offerGen.setCurrentOffers(aoffCurrentOffers);
-		return offerEval.getBestOffer(aoffCurrentOffers);
+		Offer gonnaPick = offerEval.getBestOffer(aoffCurrentOffers);
+		int[] aintOffer = gonnaPick.getOffer();
+		int[] aintDesire = gonnaPick.getDesire();
+		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
+		{
+			aintInHand[ intColorIndex ] += aintOffer[ intColorIndex ] - aintDesire[ intColorIndex ];
+		}
+		return gonnaPick;
 	}
 
 	@Override
