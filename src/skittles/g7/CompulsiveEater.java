@@ -1,8 +1,11 @@
 package skittles.g7;
 
+import skittles.g7.strategy.CompulsiveOfferEvaluator;
 import skittles.g7.strategy.OfferEvaluator;
 import skittles.g7.strategy.OfferGenerator;
+import skittles.g7.strategy.OfferGeneratorImplementer;
 import skittles.g7.strategy.PreferenceEvaluator;
+import skittles.g7.strategy.PreferenceEvaluatorImpl;
 import skittles.sim.*;
 
 public class CompulsiveEater extends Player 
@@ -118,6 +121,8 @@ public class CompulsiveEater extends Player
 	@Override
 	public Offer pickOffer(Offer[] aoffCurrentOffers) 
 	{
+		prefEval.examineIncomeOffers(aoffCurrentOffers);
+		offerGen.setCurrentOffers(aoffCurrentOffers);
 		return offerEval.getBestOffer(aoffCurrentOffers);
 	}
 
@@ -135,7 +140,7 @@ public class CompulsiveEater extends Player
 	@Override
 	public void updateOfferExe(Offer[] aoffCurrentOffers) 
 	{
-		// dumpplayer doesn't care
+		prefEval.examineAcceptedOffers(aoffCurrentOffers);
 	}
 
 	@Override
@@ -150,6 +155,16 @@ public class CompulsiveEater extends Player
 		dblHappiness = 0;
 		discovery = true;
 		adblTastes = new double[ intColorNum ];
+		
+		offerGen = new OfferGeneratorImplementer(intColorNum);
+		offerGen.setPlayer(this);
+		
+		prefEval = new PreferenceEvaluatorImpl(intColorNum);
+		prefEval.setPlayer(this);
+		
+		offerEval = new CompulsiveOfferEvaluator();
+		offerEval.setPlayer(this);
+		
 		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
 		{
 			adblTastes[ intColorIndex ] = -1;
@@ -202,5 +217,9 @@ public class CompulsiveEater extends Player
 	
 	public int[] getAIntInHand() {
 		return aintInHand;
+	}
+	
+	public int getIntLastEatIndex() {
+		return intLastEatIndex;
 	}
 }

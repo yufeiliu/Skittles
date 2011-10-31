@@ -14,10 +14,13 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 	
 	private int c;
 	
+	public PreferenceEvaluatorImpl(int c) {
+		this.c = c;
+	}
+	
 	@Override
 	public void setPlayer(CompulsiveEater player) {
 		this.player = player;
-		 c = player.getPreferences().length;
 	}
 
 	@Override
@@ -80,6 +83,8 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 		for (Offer o : offers) {
 			//Index is offset by 1
 			int curPlayer = o.getPickedByIndex();
+			
+			if (curPlayer<0) continue;
 			
 			int[] good = o.getOffer();
 			int[] bad = o.getDesire();

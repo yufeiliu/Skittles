@@ -91,7 +91,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	
 	private int getLowestPreference(){
 		return myCompulsiveEater.getPreferenceEavluator().
-			getColorsSortedFromPlayer(myCompulsiveEater.getPlayerIndex())[intColorNum];
+			getColorsSortedFromPlayer(myCompulsiveEater.getPlayerIndex())[intColorNum-1];
 	}
 	
 	/*
@@ -99,7 +99,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	 */
 	
 	public int getSkittleOfHighestAmount(){
-		int[] aintInHand = myCompulsiveEater.getAintInHand();
+		int[] aintInHand = myCompulsiveEater.getAIntInHand();
 		int maxValue = 0;
 		for (int i=0; i<aintInHand.length; i++){
 			if (aintInHand[i] > aintInHand[maxValue])
@@ -109,7 +109,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	}
 	
 	public int getSkittleOfLowestAmount(){
-		int[] aintInHand = myCompulsiveEater.getAintInHand();
+		int[] aintInHand = myCompulsiveEater.getAIntInHand();
 		int minValue = 0;
 		for (int i=0; i<aintInHand.length; i++){
 			if (aintInHand[i] < aintInHand[minValue])
@@ -119,7 +119,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	}
 	
 	public int getSkittleOf2ndHighestAmount(){
-		int[] aintInHand = myCompulsiveEater.getAintInHand();
+		int[] aintInHand = myCompulsiveEater.getAIntInHand();
 		int high = getSkittleOfHighestAmount();
 		int maxValue = 0;
 		for (int i=0; i<aintInHand.length; i++){
@@ -133,7 +133,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	}
 	
 	public int getSkittleOf2ndLowestAmount(){
-		int[] aintInHand = myCompulsiveEater.getAintInHand();
+		int[] aintInHand = myCompulsiveEater.getAIntInHand();
 		int low = getSkittleOfHighestAmount();
 		int minValue = 0;
 		for (int i=0; i<aintInHand.length; i++){
