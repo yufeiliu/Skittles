@@ -55,7 +55,7 @@ public class CompulsiveEater extends Player
 				intLastEatIndex++;
 				continue;
 			}
-			aintInHand[intLastEatIndex]--;
+			aintInHand[intLastEatIndex] = aintInHand[ eatIndex ] - 1;
 			aintTempEat[intLastEatIndex] = 1;
 			intLastEatNum = 1;
 			return;
@@ -64,13 +64,13 @@ public class CompulsiveEater extends Player
 		
 		
 		//TODO: Test threshold
-		if(adblTastes[eatIndex] > .5 && turnsEatenSame > 3){
+		if(adblTastes[eatIndex] > .5 && turnsEatenSame > 2 && eatIndex == intLastEatIndex){
 			aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
 			aintInHand[ eatIndex ] = 0;
 		}
 		else{
 			aintTempEat[ eatIndex ] = 1;
-			aintInHand[ eatIndex ]--;
+			aintInHand[ eatIndex ] = aintInHand[ eatIndex ] - 1;
 		}
 		intLastEatIndex = eatIndex;
 		intLastEatNum = aintTempEat[ eatIndex ];
@@ -80,7 +80,9 @@ public class CompulsiveEater extends Player
 		else
 			turnsEatenSame = 1;
 	}
-	
+	/*
+	 * Returns the index of the lowest value skittle which we have
+	 */
 	private int scanForLeastValuable(){
 		double minTasteValue = 2;
 		int minTasteIndex = 0;
@@ -162,6 +164,7 @@ public class CompulsiveEater extends Player
 		this.aintInHand = aintInHand;
 		intColorNum = aintInHand.length;
 		turnsEatenSame = 0;
+		intLastEatIndex = -1;
 		lastEatInv = 0;
 		dblHappiness = 0;
 		discovery = true;

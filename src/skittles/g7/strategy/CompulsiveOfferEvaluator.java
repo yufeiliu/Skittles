@@ -6,11 +6,13 @@ import skittles.sim.Offer;
 public class CompulsiveOfferEvaluator implements OfferEvaluator {
 	
 	private CompulsiveEater player;
+	private int playerIndex;
 	private int[] inHand;
 	private double[] tastes;
 
 	public void setPlayer(CompulsiveEater player) {
 		this.player = player;
+		playerIndex = player.getPlayerIndex();
 		inHand = player.getAIntInHand();
 		tastes = player.getPreferences(); 
 	}
@@ -20,7 +22,7 @@ public class CompulsiveOfferEvaluator implements OfferEvaluator {
 		Offer bestOffer = null;
 		for (Offer currOffer : offers) {
 			int[] aintDesire = currOffer.getDesire();
-			if(!checkEnoughInHand(aintDesire))
+			if(!checkEnoughInHand(aintDesire) || currOffer.getOfferedByIndex() == playerIndex)
 				continue;
 			double currentScore = 0;
 			for (int i = 0; i < aintDesire.length; i++) {
