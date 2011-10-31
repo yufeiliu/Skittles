@@ -40,7 +40,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 
 	@Override
 	public Offer getOffer() {
-		Offer newOffer = new Offer(myCompulsiveEater.getIntPlayerIndex(), intColorNum);
+		Offer newOffer = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
 		int[] intOffer = new int[intColorNum];
 		int[] intDesire = new int[intColorNum];
 			if (turn==0){
@@ -154,7 +154,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	 * @return
 	 */
 	public boolean isOfferCold(Offer anOffer){
-		int myPlayerIndex = myCompulsiveEater.getIntPlayerIndex();
+		int myPlayerIndex = myCompulsiveEater.getPlayerIndex();
 		if (turn > 1){
 			if ( compareOffers(offersHistory.get(turn)[myPlayerIndex], anOffer)
 					|| compareOffers(offersHistory.get(turn-1)[myPlayerIndex], anOffer) ){
