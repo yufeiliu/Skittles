@@ -43,8 +43,6 @@ public class CompulsiveEater extends Player
 	public void eat( int[] aintTempEat )
 	{
 		printInHand();
-		
-		
 		int eatIndex = scanForLeastValuable();
 		//eat all of last color
 		if(colorsRemaining == 1){
@@ -85,10 +83,10 @@ public class CompulsiveEater extends Player
 			turnsEatenSame = 1;
 	}
 	/*
-	 * Returns the index of the lowest value skittle which we have
+	 * Returns the index of the color whose score is closest to zero
 	 */
 	private int scanForLeastValuable(){
-		double minTasteValue = 2;
+		double minDistanceFromZero = 2;
 		int minTasteIndex = 0;
 		colorsRemaining = intColorNum;
 		for(int i = 0; i < intColorNum; i++){
@@ -96,8 +94,8 @@ public class CompulsiveEater extends Player
 				colorsRemaining--;
 				continue;
 			}
-			if(adblTastes[i] < minTasteValue){
-				minTasteValue = adblTastes[i]; 
+			if(Math.abs(adblTastes[i]) < minDistanceFromZero){
+				minDistanceFromZero = Math.abs(adblTastes[i]); 
 				minTasteIndex = i;
 			}
 		}
@@ -150,8 +148,8 @@ public class CompulsiveEater extends Player
 	@Override
 	public Offer pickOffer(Offer[] aoffCurrentOffers) 
 	{
-		return null;
-		/*prefEval.examineIncomeOffers(aoffCurrentOffers);
+		
+		prefEval.examineIncomeOffers(aoffCurrentOffers);
 		offerGen.setCurrentOffers(aoffCurrentOffers);
 		Offer gonnaPick = offerEval.getBestOffer(aoffCurrentOffers);
 		if(gonnaPick == null)
@@ -162,7 +160,7 @@ public class CompulsiveEater extends Player
 		{
 			aintInHand[ intColorIndex ] += aintOffer[ intColorIndex ] - aintDesire[ intColorIndex ];
 		}
-		return gonnaPick;*/
+		return gonnaPick;
 	}
 
 	@Override
@@ -208,6 +206,7 @@ public class CompulsiveEater extends Player
 		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
 		{
 			adblTastes[ intColorIndex ] = UNKNOWN_TASTE;
+
 		}
 	}
 	
