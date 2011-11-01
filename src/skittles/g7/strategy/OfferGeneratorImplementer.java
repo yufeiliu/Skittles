@@ -76,10 +76,10 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 				intOffer[getLowestPreference()] = 2;
 			}
 		newOffer.setOffer(intOffer, intDesire);
-		if (isOfferCold(newOffer)){
+		/*if (isOfferCold(newOffer)){
 			//generateNewOffer
 			//perhaps change to 1 and 1
-		}
+		}*/
 		turn++;
 		return newOffer;
 	}
@@ -153,7 +153,9 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	 * @param anOffer
 	 * @return
 	 */
-	public boolean isOfferCold(Offer anOffer){
+	
+	// TODO: check for null offers
+/*	public boolean isOfferCold(Offer anOffer){
 		int myPlayerIndex = myCompulsiveEater.getPlayerIndex();
 		if (turn > 1){
 			if ( compareOffers(offersHistory.get(turn)[myPlayerIndex], anOffer)
@@ -162,7 +164,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	public boolean compareOffers(Offer offer1, Offer offer2){
 		for (int i=0; i<intColorNum; i++){

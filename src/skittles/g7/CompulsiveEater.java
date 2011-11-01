@@ -43,6 +43,21 @@ public class CompulsiveEater extends Player
 	{
 		int eatIndex = scanForLeastValuable();
 		//eat all of last color
+		
+		aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
+		aintInHand[ eatIndex ] = 0;
+		intLastEatIndex = eatIndex;
+		intLastEatNum = aintTempEat[ eatIndex ];
+		return;
+		
+		/*System.out.print("aintHand: ");
+		for (int i=0; i<intColorNum; i++){
+			System.out.print(aintInHand[i] + ", ");
+		}
+		System.out.println();
+		
+		int eatIndex = scanForLeastValuable();
+		//eat all of last color
 		if(colorsRemaining == 1){
 			aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
 			aintInHand[ eatIndex ] = 0;
@@ -78,7 +93,7 @@ public class CompulsiveEater extends Player
 		if(eatIndex == intLastEatIndex)
 			turnsEatenSame++;
 		else
-			turnsEatenSame = 1;
+			turnsEatenSame = 1;*/
 	}
 	/*
 	 * Returns the index of the lowest value skittle which we have
@@ -103,8 +118,10 @@ public class CompulsiveEater extends Player
 	@Override
 	public void offer( Offer offTemp )
 	{
-		Offer ourOffer = offerGen.getOffer();
-		offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
+		//Offer ourOffer = offerGen.getOffer();
+		Offer nullOffer = new Offer(intPlayerIndex, intColorNum);
+		//offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
+		offTemp.setOffer(nullOffer.getOffer(), nullOffer.getDesire());
 	}
 
 	@Override
@@ -134,16 +151,19 @@ public class CompulsiveEater extends Player
 	@Override
 	public Offer pickOffer(Offer[] aoffCurrentOffers) 
 	{
-		prefEval.examineIncomeOffers(aoffCurrentOffers);
+		return null;
+		/*prefEval.examineIncomeOffers(aoffCurrentOffers);
 		offerGen.setCurrentOffers(aoffCurrentOffers);
 		Offer gonnaPick = offerEval.getBestOffer(aoffCurrentOffers);
+		if (gonnaPick==null)
+			return null;
 		int[] aintOffer = gonnaPick.getOffer();
 		int[] aintDesire = gonnaPick.getDesire();
 		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
 		{
 			aintInHand[ intColorIndex ] += aintOffer[ intColorIndex ] - aintDesire[ intColorIndex ];
 		}
-		return gonnaPick;
+		return gonnaPick;*/
 	}
 
 	@Override
@@ -160,7 +180,7 @@ public class CompulsiveEater extends Player
 	@Override
 	public void updateOfferExe(Offer[] aoffCurrentOffers) 
 	{
-		prefEval.examineAcceptedOffers(aoffCurrentOffers);
+		//prefEval.examineAcceptedOffers(aoffCurrentOffers);
 	}
 
 	@Override

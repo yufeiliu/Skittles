@@ -259,6 +259,7 @@ public class Game
 				alCurrentOffers.add( offTemp );
 				continue;
 			}
+			aplyPlayers[ intPlayerIndex ].syncInHand(aplsPlayerStatus[intPlayerIndex].getInHand());
 			aplyPlayers[ intPlayerIndex ].eat( aintTempEat );
 			// process eat
 			if ( aplsPlayerStatus[ intPlayerIndex ].checkCanEat( aintTempEat ) )
