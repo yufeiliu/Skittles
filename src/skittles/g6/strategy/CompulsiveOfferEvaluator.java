@@ -35,8 +35,10 @@ public class CompulsiveOfferEvaluator implements OfferEvaluator {
 				currentScore += tastes[i] * (Math.pow(inHand[i] + aintOffer[i], 2) - Math.pow(inHand[i], 2));
 			}
 			
-			if(currentScore > maxScore)
+			if(currentScore > maxScore){
 				bestOffer = currOffer;
+				maxScore = currentScore;
+			}
 		}
 		return bestOffer;
 	}
