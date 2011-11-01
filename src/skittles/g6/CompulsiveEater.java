@@ -82,10 +82,10 @@ public class CompulsiveEater extends Player
 			turnsEatenSame = 1;
 	}
 	/*
-	 * Returns the index of the lowest value skittle which we have
+	 * Returns the index of the color whose score is closest to zero
 	 */
 	private int scanForLeastValuable(){
-		double minTasteValue = 2;
+		double minDistanceFromZero = 2;
 		int minTasteIndex = 0;
 		colorsRemaining = intColorNum;
 		for(int i = 0; i < intColorNum; i++){
@@ -93,8 +93,8 @@ public class CompulsiveEater extends Player
 				colorsRemaining--;
 				continue;
 			}
-			if(adblTastes[i] < minTasteValue){
-				minTasteValue = adblTastes[i]; 
+			if(Math.abs(adblTastes[i]) < minDistanceFromZero){
+				minDistanceFromZero = Math.abs(adblTastes[i]); 
 				minTasteIndex = i;
 			}
 		}
@@ -204,7 +204,7 @@ public class CompulsiveEater extends Player
 		
 		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
 		{
-			adblTastes[ intColorIndex ] = -1;
+			adblTastes[ intColorIndex ] = 0;
 		}
 	}
 	
