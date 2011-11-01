@@ -19,6 +19,7 @@ public class CompulsiveEater extends Player
 	private int turnsEatenSame;
 	private int lastEatInv;
 	private int colorsRemaining;
+	private final double UNKNOWN_TASTE = -.000000121;
 	
 	//===== EVERYTHING BELOW CAME FROM DumpPlayer ====
 	private int[] aintInHand;
@@ -133,7 +134,7 @@ public class CompulsiveEater extends Player
 	public void happier(double dblHappinessUp) 
 	{
 		double dblHappinessPerCandy = dblHappinessUp / Math.pow( intLastEatNum, 2 );
-		if ( adblTastes[ intLastEatIndex ] == -1 )
+		if ( adblTastes[ intLastEatIndex ] == UNKNOWN_TASTE )
 		{
 			adblTastes[ intLastEatIndex ] = dblHappinessPerCandy;
 		}
@@ -206,7 +207,7 @@ public class CompulsiveEater extends Player
 		
 		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
 		{
-			adblTastes[ intColorIndex ] = -1;
+			adblTastes[ intColorIndex ] = UNKNOWN_TASTE;
 		}
 	}
 	
