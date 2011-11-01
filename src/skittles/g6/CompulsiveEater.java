@@ -119,18 +119,17 @@ public class CompulsiveEater extends Player
 	@Override
 	public void offer( Offer offTemp )
 	{
-<<<<<<< HEAD
-		//Offer ourOffer = offerGen.getOffer();
+		/*//Offer ourOffer = offerGen.getOffer();
 		Offer nullOffer = new Offer(intPlayerIndex, intColorNum);
 		//offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
-		offTemp.setOffer(nullOffer.getOffer(), nullOffer.getDesire());
-=======
+		offTemp.setOffer(nullOffer.getOffer(), nullOffer.getDesire());*/
+
 		Offer ourOffer = offerGen.getOffer();
 		//System.out.println("our offer is" + ourOffer.toString());
 		//offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
 		int[] zeros = {0,0,0,0,0};
 		offTemp.setOffer(zeros, zeros);
->>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
+
 	}
 
 	@Override

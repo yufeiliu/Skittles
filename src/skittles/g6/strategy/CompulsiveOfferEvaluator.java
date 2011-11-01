@@ -22,12 +22,9 @@ public class CompulsiveOfferEvaluator implements OfferEvaluator {
 		Offer bestOffer = null;
 		for (Offer currOffer : offers) {
 			int[] aintDesire = currOffer.getDesire();
-<<<<<<< HEAD
-			if(checkEnoughInHand(aintDesire) || currOffer.getOfferedByIndex() == playerIndex)
-=======
+
 			if(!checkEnoughInHand(aintDesire) || currOffer.getOfferedByIndex() == playerIndex 
 					|| !currOffer.getOfferLive())
->>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
 				continue;
 			double currentScore = 0;
 			for (int i = 0; i < aintDesire.length; i++) {

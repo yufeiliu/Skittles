@@ -73,17 +73,12 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 				intOffer[getLowestPreference()] = 2;
 			}
 		newOffer.setOffer(intOffer, intDesire);
-<<<<<<< HEAD
+
 		/*if (isOfferCold(newOffer)){
 			//generateNewOffer
 			//perhaps change to 1 and 1
 		}*/
-=======
-		//if (isOfferCold(newOffer)){
-			//generateNewOffer
-			//perhaps change to 1 and 1
-		//}
->>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
+
 		turn++;
 		return newOffer;
 	}
@@ -157,11 +152,9 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	 * @param anOffer
 	 * @return
 	 */
-<<<<<<< HEAD
 	
 	// TODO: check for null offers
-=======
->>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
+
 /*	public boolean isOfferCold(Offer anOffer){
 		int myPlayerIndex = myCompulsiveEater.getPlayerIndex();
 		if (turn > 1){
