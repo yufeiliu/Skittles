@@ -43,21 +43,13 @@ public class CompulsiveEater extends Player
 	{
 		printInHand();
 		int eatIndex = scanForLeastValuable();
-		//eat all of last color
 		
-		aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
-		aintInHand[ eatIndex ] = 0;
-		intLastEatIndex = eatIndex;
-		intLastEatNum = aintTempEat[ eatIndex ];
-		return;
-		
-		/*System.out.print("aintHand: ");
+		System.out.print("aintHand: ");
 		for (int i=0; i<intColorNum; i++){
 			System.out.print(aintInHand[i] + ", ");
 		}
 		System.out.println();
-		
-		int eatIndex = scanForLeastValuable();
+
 		//eat all of last color
 		if(colorsRemaining == 1){
 			aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
@@ -94,7 +86,7 @@ public class CompulsiveEater extends Player
 		if(eatIndex == intLastEatIndex)
 			turnsEatenSame++;
 		else
-			turnsEatenSame = 1;*/
+			turnsEatenSame = 1;
 	}
 	/*
 	 * Returns the index of the lowest value skittle which we have
@@ -162,8 +154,8 @@ public class CompulsiveEater extends Player
 	@Override
 	public Offer pickOffer(Offer[] aoffCurrentOffers) 
 	{
-		return null;
-		/*prefEval.examineIncomeOffers(aoffCurrentOffers);
+		
+		prefEval.examineIncomeOffers(aoffCurrentOffers);
 		offerGen.setCurrentOffers(aoffCurrentOffers);
 		Offer gonnaPick = offerEval.getBestOffer(aoffCurrentOffers);
 		if(gonnaPick == null)
@@ -174,7 +166,7 @@ public class CompulsiveEater extends Player
 		{
 			aintInHand[ intColorIndex ] += aintOffer[ intColorIndex ] - aintDesire[ intColorIndex ];
 		}
-		return gonnaPick;*/
+		return gonnaPick;
 	}
 
 	@Override
