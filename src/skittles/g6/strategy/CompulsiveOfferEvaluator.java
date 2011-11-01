@@ -13,13 +13,13 @@ public class CompulsiveOfferEvaluator implements OfferEvaluator {
 	public void setPlayer(CompulsiveEater player) {
 		this.player = player;
 		playerIndex = player.getPlayerIndex();
-		inHand = player.getAIntInHand();
-		tastes = player.getPreferences(); 
+		inHand = player.getAIntInHand(); 
 	}
 
 	public Offer getBestOffer(Offer[] offers) {
 		double maxScore = 0;
 		Offer bestOffer = null;
+		tastes = player.getPreferences();
 		for (Offer currOffer : offers) {
 			int[] aintDesire = currOffer.getDesire();
 
@@ -27,11 +27,18 @@ public class CompulsiveOfferEvaluator implements OfferEvaluator {
 					|| !currOffer.getOfferLive())
 				continue;
 			double currentScore = 0;
+			
 			for (int i = 0; i < aintDesire.length; i++) {
+				
+				if (i == tastes.length) break;
+				
 				currentScore += tastes[i] * (Math.pow(inHand[i], 2) - Math.pow(inHand[i] + aintDesire[i], 2));
 			}
 			int[] aintOffer = currOffer.getOffer();
 			for (int i = 0; i < aintOffer.length; i++) {
+				
+				if (i==tastes.length) break;
+				
 				currentScore += tastes[i] * (Math.pow(inHand[i] + aintOffer[i], 2) - Math.pow(inHand[i], 2));
 			}
 			

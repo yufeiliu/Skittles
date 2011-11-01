@@ -10,26 +10,6 @@
 		<InHand>random</InHand>
 	</Player>
 	<Player>
-		<Class>skittles.g1player.G1Player</Class>
-		<Happiness>random,0.5</Happiness>
-		<InHand>random</InHand>
-	</Player>
-	<Player>
-		<Class>skittles.g6.CompulsiveEater</Class>
-		<Happiness>random,0.5</Happiness>
-		<InHand>random</InHand>
-	</Player>
-		<Player>
-		<Class>skittles.g6.CompulsiveEater</Class>
-		<Happiness>random,0.5</Happiness>
-		<InHand>random</InHand>
-	</Player>
-		<Player>
-		<Class>skittles.g6.CompulsiveEater</Class>
-		<Happiness>random,0.5</Happiness>
-		<InHand>random</InHand>
-	</Player>
-		<Player>
 		<Class>skittles.g6.CompulsiveEater</Class>
 		<Happiness>random,0.5</Happiness>
 		<InHand>random</InHand>
