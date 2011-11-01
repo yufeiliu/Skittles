@@ -124,7 +124,7 @@ public class CompulsiveEater extends Player
 		//offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
 		offTemp.setOffer(nullOffer.getOffer(), nullOffer.getDesire());*/
 
-		Offer ourOffer = offerGen.getOffer();
+		//Offer ourOffer = offerGen.getOffer();
 		//System.out.println("our offer is" + ourOffer.toString());
 		//offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
 		int[] zeros = {0,0,0,0,0};
@@ -166,11 +166,7 @@ public class CompulsiveEater extends Player
 		/*prefEval.examineIncomeOffers(aoffCurrentOffers);
 		offerGen.setCurrentOffers(aoffCurrentOffers);
 		Offer gonnaPick = offerEval.getBestOffer(aoffCurrentOffers);
-<<<<<<< HEAD
-		if (gonnaPick==null)
-=======
 		if(gonnaPick == null)
->>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
 			return null;
 		int[] aintOffer = gonnaPick.getOffer();
 		int[] aintDesire = gonnaPick.getDesire();
