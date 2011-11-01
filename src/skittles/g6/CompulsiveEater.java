@@ -1,6 +1,8 @@
 package skittles.g6;
 
 import skittles.g6.strategy.CompulsiveOfferEvaluator;
+import skittles.g6.strategy.InventoryLowerBound;
+import skittles.g6.strategy.InventoryLowerBoundImpl;
 import skittles.g6.strategy.OfferEvaluator;
 import skittles.g6.strategy.OfferGenerator;
 import skittles.g6.strategy.OfferGeneratorImplementer;
@@ -14,6 +16,7 @@ public class CompulsiveEater extends Player
 	private PreferenceEvaluator prefEval;
 	private OfferEvaluator offerEval;
 	private OfferGenerator offerGen;
+	private InventoryLowerBound inventoryLowerBound;
 	private int turnCounter;
 	private boolean discovery;
 	private int turnsEatenSame;
@@ -105,9 +108,6 @@ public class CompulsiveEater extends Player
 	@Override
 	public void offer( Offer offTemp )
 	{
-		/*int[] zeros = {0,0,0,0,0};
-		offTemp.setOffer(zeros, zeros);*/
-		
 		Offer ourOffer = offerGen.getOffer();
 		offTemp.setOffer(ourOffer.getOffer(), ourOffer.getDesire());
 
@@ -142,7 +142,8 @@ public class CompulsiveEater extends Player
 
 	@Override
 	public Offer pickOffer(Offer[] aoffCurrentOffers) 
-	{
+	{	
+		inventoryLowerBound.setCurrentOffers(aoffCurrentOffers);
 		
 		prefEval.examineIncomeOffers(aoffCurrentOffers);
 		offerGen.setCurrentOffers(aoffCurrentOffers);
@@ -172,7 +173,7 @@ public class CompulsiveEater extends Player
 	@Override
 	public void updateOfferExe(Offer[] aoffCurrentOffers) 
 	{
-		//prefEval.examineAcceptedOffers(aoffCurrentOffers);
+		prefEval.examineAcceptedOffers(aoffCurrentOffers);
 	}
 
 	@Override
@@ -197,6 +198,9 @@ public class CompulsiveEater extends Player
 		
 		offerEval = new CompulsiveOfferEvaluator();
 		offerEval.setPlayer(this);
+		
+		inventoryLowerBound = new InventoryLowerBoundImpl();
+		inventoryLowerBound.setPlayer(this);
 		
 		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
 		{
@@ -247,6 +251,10 @@ public class CompulsiveEater extends Player
 	
 	public PreferenceEvaluator getPreferenceEavluator() {
 		return prefEval;
+	}
+	
+	public InventoryLowerBound getInventoryLowerBound() {
+		return inventoryLowerBound;
 	}
 	
 	public int getTurnCounter() {
