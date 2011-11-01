@@ -1,5 +1,7 @@
 package skittles.g6.strategy;
 
+import java.util.Arrays;
+
 import skittles.g6.CompulsiveEater;
 import skittles.sim.Offer;
 
