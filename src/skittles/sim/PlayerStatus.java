@@ -116,6 +116,10 @@ public class PlayerStatus
 		return aintInHand;
 	}
 	
+	public double[] getTastes(){
+		return adblTaste;
+	}
+	
 	public String toString()
 	{
 		String strReturn = "Player #" + intPlayerIndex + ": ";

@@ -163,20 +163,10 @@ public class Game
 	{
 		int[] aintRandomInHand = new int[ intColorNum ];
 		Random rdmTemp = new Random();
-		int[] aintTemp = new int[ intColorNum + 1 ];
-		aintTemp[ intColorNum ] = intTotalNum;
-		for ( int intColorIndex = 1; intColorIndex < intColorNum; intColorIndex ++ )
+		for ( int intColorIndex = 0; intColorIndex < intTotalNum; intColorIndex ++ )
 		{
-			aintTemp[ intColorIndex ] = rdmTemp.nextInt( intTotalNum + 1 );
+			aintRandomInHand[ rdmTemp.nextInt( intColorNum ) ]++;
 		}
-		Arrays.sort( aintTemp );
-//		System.out.println( "RandomInHand: " );
-		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
-		{
-			aintRandomInHand[ intColorIndex ] = aintTemp[ intColorIndex + 1 ] - aintTemp[ intColorIndex ];
-//			System.out.print( aintRandomInHand[ intColorIndex ] + " " );
-		}
-//		System.out.println();
 		return aintRandomInHand;
 	}
 
@@ -213,6 +203,11 @@ public class Game
 		{
 			double dblTempHappy = plsTemp.getHappiness() + dblAver;
 			System.out.println( "Player #" + plsTemp.getPlayerIndex() + "'s happiness is: " + dblTempHappy );
+			System.out.print("Tastes were ");
+			for(int i = 0; i < intColorNum; i++){
+				System.out.print(Math.round(plsTemp.getTastes()[i] * 100)/100.0 + ", ");
+			}
+			System.out.println();
 		}
 	}
 	

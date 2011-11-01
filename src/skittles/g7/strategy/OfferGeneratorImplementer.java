@@ -23,12 +23,10 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		turn = 0;
 	}
 	
-	@Override
 	public void setPlayer(CompulsiveEater player) {
 		myCompulsiveEater = player;
 	}
 
-	@Override
 	public void setCurrentOffers(Offer[] offers) {
 		Offer[] offerCopy = new Offer[offers.length];
 		for (int i=0; i<offers.length; i++){
@@ -38,7 +36,6 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		//offersHistory.add(offers);
 	}
 
-	@Override
 	public Offer getOffer() {
 		Offer newOffer = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
 		int[] intOffer = new int[intColorNum];
@@ -76,10 +73,10 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 				intOffer[getLowestPreference()] = 2;
 			}
 		newOffer.setOffer(intOffer, intDesire);
-		if (isOfferCold(newOffer)){
+		//if (isOfferCold(newOffer)){
 			//generateNewOffer
 			//perhaps change to 1 and 1
-		}
+		//}
 		turn++;
 		return newOffer;
 	}
@@ -153,7 +150,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	 * @param anOffer
 	 * @return
 	 */
-	public boolean isOfferCold(Offer anOffer){
+/*	public boolean isOfferCold(Offer anOffer){
 		int myPlayerIndex = myCompulsiveEater.getPlayerIndex();
 		if (turn > 1){
 			if ( compareOffers(offersHistory.get(turn)[myPlayerIndex], anOffer)
@@ -162,7 +159,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 			}
 		}
 		return false;
-	}
+	}*/
 	
 	public boolean compareOffers(Offer offer1, Offer offer2){
 		for (int i=0; i<intColorNum; i++){

@@ -41,6 +41,7 @@ public class CompulsiveEater extends Player
 	@Override
 	public void eat( int[] aintTempEat )
 	{
+		printInHand();
 		int eatIndex = scanForLeastValuable();
 		//eat all of last color
 		if(colorsRemaining == 1){
@@ -55,7 +56,7 @@ public class CompulsiveEater extends Player
 				intLastEatIndex++;
 				continue;
 			}
-			aintInHand[intLastEatIndex] = aintInHand[ eatIndex ] - 1;
+			aintInHand[intLastEatIndex]--;
 			aintTempEat[intLastEatIndex] = 1;
 			intLastEatNum = 1;
 			return;
@@ -70,7 +71,7 @@ public class CompulsiveEater extends Player
 		}
 		else{
 			aintTempEat[ eatIndex ] = 1;
-			aintInHand[ eatIndex ] = aintInHand[ eatIndex ] - 1;
+			aintInHand[ eatIndex ]--;
 		}
 		intLastEatIndex = eatIndex;
 		intLastEatNum = aintTempEat[ eatIndex ];
@@ -104,13 +105,19 @@ public class CompulsiveEater extends Player
 	public void offer( Offer offTemp )
 	{
 		Offer ourOffer = offerGen.getOffer();
-		offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
+		//System.out.println("our offer is" + ourOffer.toString());
+		//offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
+		int[] zeros = {0,0,0,0,0};
+		offTemp.setOffer(zeros, zeros);
 	}
 
 	@Override
 	public void syncInHand(int[] aintInHand) 
 	{
 		// TODO Auto-generated method stub
+		for (int i = 0; i < this.aintInHand.length; i++) {
+			this.aintInHand[i] = aintInHand[i];
+		}
 		
 	}
 
@@ -137,6 +144,8 @@ public class CompulsiveEater extends Player
 		prefEval.examineIncomeOffers(aoffCurrentOffers);
 		offerGen.setCurrentOffers(aoffCurrentOffers);
 		Offer gonnaPick = offerEval.getBestOffer(aoffCurrentOffers);
+		if(gonnaPick == null)
+			return null;
 		int[] aintOffer = gonnaPick.getOffer();
 		int[] aintDesire = gonnaPick.getDesire();
 		for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
@@ -202,6 +211,14 @@ public class CompulsiveEater extends Player
 			}
 		}
 		return true;
+	}
+	
+	public void printInHand(){
+		System.out.print("InHand: ");
+		for (int i = 0; i < aintInHand.length; i++) {
+			System.out.print(aintInHand[i] + " ");
+		}
+		System.out.println();
 	}
 
 	@Override
