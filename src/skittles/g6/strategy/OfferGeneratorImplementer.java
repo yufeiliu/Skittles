@@ -1,8 +1,8 @@
-package skittles.g7.strategy;
+package skittles.g6.strategy;
 
 import java.util.ArrayList;
 
-import skittles.g7.CompulsiveEater;
+import skittles.g6.CompulsiveEater;
 import skittles.sim.Offer;
 
 public class OfferGeneratorImplementer implements OfferGenerator{

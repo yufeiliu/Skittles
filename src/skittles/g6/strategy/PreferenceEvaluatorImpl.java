@@ -1,9 +1,9 @@
-package skittles.g7.strategy;
+package skittles.g6.strategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import skittles.g7.CompulsiveEater;
+import skittles.g6.CompulsiveEater;
 import skittles.sim.Offer;
 
 public class PreferenceEvaluatorImpl implements PreferenceEvaluator {

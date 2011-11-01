@@ -1,11 +1,11 @@
-package skittles.g7;
+package skittles.g6;
 
-import skittles.g7.strategy.CompulsiveOfferEvaluator;
-import skittles.g7.strategy.OfferEvaluator;
-import skittles.g7.strategy.OfferGenerator;
-import skittles.g7.strategy.OfferGeneratorImplementer;
-import skittles.g7.strategy.PreferenceEvaluator;
-import skittles.g7.strategy.PreferenceEvaluatorImpl;
+import skittles.g6.strategy.CompulsiveOfferEvaluator;
+import skittles.g6.strategy.OfferEvaluator;
+import skittles.g6.strategy.OfferGenerator;
+import skittles.g6.strategy.OfferGeneratorImplementer;
+import skittles.g6.strategy.PreferenceEvaluator;
+import skittles.g6.strategy.PreferenceEvaluatorImpl;
 import skittles.sim.*;
 
 public class CompulsiveEater extends Player 
@@ -173,7 +173,7 @@ public class CompulsiveEater extends Player
 	}
 
 	@Override
-	public void initialize(int intPlayerIndex, String strClassName,	int[] aintInHand) 
+	public void initialize(int intPlayerNum, int intPlayerIndex, String strClassName,	int[] aintInHand) 
 	{
 		this.intPlayerIndex = intPlayerIndex;
 		this.strClassName = strClassName;

@@ -1,6 +1,6 @@
-package skittles.g7.strategy;
+package skittles.g6.strategy;
 
-import skittles.g7.CompulsiveEater;
+import skittles.g6.CompulsiveEater;
 import skittles.sim.Offer;
 
 public class CompulsiveOfferEvaluator implements OfferEvaluator {
