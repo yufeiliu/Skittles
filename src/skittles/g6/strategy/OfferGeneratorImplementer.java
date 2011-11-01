@@ -1,8 +1,10 @@
 package skittles.g6.strategy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import skittles.g6.CompulsiveEater;
+//import skittles.g6.strategy.PreferenceEvaluatorImpl.Pair;
 import skittles.sim.Offer;
 
 public class OfferGeneratorImplementer implements OfferGenerator{
@@ -11,6 +13,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	ArrayList<Offer[]> offersHistory;
 	int intColorNum;
 	int turn;
+	final int TEMP_OFFER_SIZE = 2;
 	
 	public OfferGeneratorImplementer(){
 		offersHistory = new ArrayList<Offer[]>();
@@ -45,18 +48,18 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 				int lastEatIndex = myCompulsiveEater.getIntLastEatIndex();
 				//Ask for 2 of the last one you ate if its good (>0.5 for now)
 				if (myCompulsiveEater.getPreferences()[lastEatIndex] >= 0.5){
-					intDesire[lastEatIndex] = 2;
+					intDesire[lastEatIndex] = TEMP_OFFER_SIZE;
 					
 					/* offer 2 skittles of the highest amount you have, unless the highest amount 
 					   skittle is the same as that of the lastEatIndex */
 					int high = getSkittleOfHighestAmount();
 					if (high == lastEatIndex)
 						high = getSkittleOf2ndHighestAmount();
-					intOffer[high] = 2;
+					intOffer[high] = TEMP_OFFER_SIZE;
 					
 				}
-				else if(myCompulsiveEater.getPreferences()[lastEatIndex] < 0){
-					intOffer[lastEatIndex] = 2;
+				else {//if(myCompulsiveEater.getPreferences()[lastEatIndex] < 0){
+					intOffer[lastEatIndex] = TEMP_OFFER_SIZE;
 					
 					/* offer 2 skittles of the last one you ate b/c you don't like it
 					 * ask for 2 skittles of the lowest amount you have, or 
@@ -65,12 +68,12 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 					int low = getSkittleOfLowestAmount();
 					if (low == lastEatIndex)
 						low = getSkittleOf2ndLowestAmount();
-					intDesire[low] = 2;
+					intDesire[low] = TEMP_OFFER_SIZE;
 				}
 			}
 			else{
-				intDesire[getHighestPreference()] = 2;
-				intOffer[getLowestPreference()] = 2;
+				intDesire[getHighestPreference()] = TEMP_OFFER_SIZE;
+				intOffer[getLowestPreference()] = TEMP_OFFER_SIZE;
 			}
 		newOffer.setOffer(intOffer, intDesire);
 
@@ -84,13 +87,26 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	}
 
 	private int getHighestPreference(){
-		return myCompulsiveEater.getPreferenceEavluator().
-			getColorsSortedFromPlayer(myCompulsiveEater.getPlayerIndex())[0];
+		myCompulsiveEater.getPreferences();
+		double[] aDblTastesCopy =  myCompulsiveEater.getPreferences().clone();		
+		ArrayList<Pair<Double, Integer>> preferencesAndColors = new ArrayList<Pair<Double,Integer>>();
+		for (int i=0; i<aDblTastesCopy.length; i++){
+			preferencesAndColors.add(new Pair<Double,Integer>(aDblTastesCopy[i], i));
+		}
+		Collections.sort(preferencesAndColors);
+		return preferencesAndColors.get(0).getBack();
+		
 	}
 	
 	private int getLowestPreference(){
-		return myCompulsiveEater.getPreferenceEavluator().
-			getColorsSortedFromPlayer(myCompulsiveEater.getPlayerIndex())[intColorNum-1];
+		double[] aDblTastesCopy =  myCompulsiveEater.getPreferences().clone();		
+		ArrayList<Pair<Double, Integer>> preferencesAndColors = new ArrayList<Pair<Double,Integer>>();
+		
+		for (int i=0; i<aDblTastesCopy.length; i++){
+			preferencesAndColors.add(new Pair<Double,Integer>(aDblTastesCopy[i], i));
+		}
+		Collections.sort(preferencesAndColors);
+		return preferencesAndColors.get(preferencesAndColors.size()-1).getBack();
 	}
 	
 	/*
@@ -172,6 +188,27 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 				return false;
 		}
 		return true;
+	}
+	
+	private class Pair<T extends Comparable<T>, W> implements Comparable<Pair<T, W>> {
+
+		private T front;
+		private W back;
+		
+		public Pair(T aFront, W aBack) {
+			this.front = aFront;
+			this.back = aBack;
+		}
+		
+		@SuppressWarnings("unused")
+		public T getFront() { return front; }
+		public W getBack() { return back; }
+		
+		//only compare on the front element
+		public int compareTo(Pair<T, W> arg0) {
+			return -1 * this.front.compareTo(arg0.front);
+		}
+		
 	}
 }
 
