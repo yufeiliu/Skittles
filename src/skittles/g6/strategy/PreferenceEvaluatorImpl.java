@@ -1,9 +1,9 @@
-package skittles.g7.strategy;
+package skittles.g6.strategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import skittles.g7.CompulsiveEater;
+import skittles.g6.CompulsiveEater;
 import skittles.sim.Offer;
 
 public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
@@ -18,12 +18,10 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 		this.c = c;
 	}
 	
-	@Override
 	public void setPlayer(CompulsiveEater player) {
 		this.player = player;
 	}
 
-	@Override
 	public void examineIncomeOffers(Offer[] offers) {
 		
 		int turn = player.getTurnCounter();
@@ -75,7 +73,6 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 		}
 	}
 
-	@Override
 	public void examineAcceptedOffers(Offer[] offers) {
 		
 		int turn = player.getTurnCounter();
@@ -117,7 +114,6 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 		return ratio * (0.5 + 0.1 * turn);
 	}
 
-	@Override
 	public int queryPreference(int playerId, int color1, int color2) {
 		if (rawScores[playerId][color1]==Integer.MIN_VALUE || rawScores[playerId][color2]==Integer.MIN_VALUE
 				|| rawScores[playerId][color1]==rawScores[playerId][color2]) 
@@ -126,7 +122,6 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 		return (rawScores[playerId][color1]>rawScores[playerId][color2] ? 1 : -1);
 	}
 
-	@Override
 	public int queryPlayerWithStrongerPreference(int color, int player1,
 			int player2) {
 		if (rawScores[player1][color]==Integer.MIN_VALUE || rawScores[player2][color]==Integer.MIN_VALUE
@@ -136,7 +131,6 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 		return (rawScores[player1][color]>rawScores[player2][color] ? 1 : -1);
 	}
 
-	@Override
 	public int[] getPlayersWhoLikeColor(int c) {
 		ArrayList<Integer> players = new ArrayList<Integer>();
 		for (int i = 0; i < rawScores.length; i++) {
@@ -154,7 +148,7 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 		return toReturn;
 	}
 
-	@Override
+	//TODO: BUGGY!!!
 	public int[] getColorsSortedFromPlayer(int playerId) {
 		ArrayList<Pair<Double, Integer>> temp = new ArrayList<Pair<Double, Integer>>();
 		for (int i = 0; i < rawScores[playerId].length; i++) {
@@ -173,7 +167,6 @@ public class PreferenceEvaluatorImpl implements PreferenceEvaluator {
 		return toReturn;
 	}
 
-	@Override
 	public int[] getPlayersSortedFromColor(int color) {
 		ArrayList<Pair<Double, Integer>> temp = new ArrayList<Pair<Double, Integer>>();
 		for (int i = 0; i < rawScores.length; i++) {

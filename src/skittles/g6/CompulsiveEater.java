@@ -1,11 +1,11 @@
-package skittles.g7;
+package skittles.g6;
 
-import skittles.g7.strategy.CompulsiveOfferEvaluator;
-import skittles.g7.strategy.OfferEvaluator;
-import skittles.g7.strategy.OfferGenerator;
-import skittles.g7.strategy.OfferGeneratorImplementer;
-import skittles.g7.strategy.PreferenceEvaluator;
-import skittles.g7.strategy.PreferenceEvaluatorImpl;
+import skittles.g6.strategy.CompulsiveOfferEvaluator;
+import skittles.g6.strategy.OfferEvaluator;
+import skittles.g6.strategy.OfferGenerator;
+import skittles.g6.strategy.OfferGeneratorImplementer;
+import skittles.g6.strategy.PreferenceEvaluator;
+import skittles.g6.strategy.PreferenceEvaluatorImpl;
 import skittles.sim.*;
 
 public class CompulsiveEater extends Player 
@@ -41,6 +41,7 @@ public class CompulsiveEater extends Player
 	@Override
 	public void eat( int[] aintTempEat )
 	{
+		printInHand();
 		int eatIndex = scanForLeastValuable();
 		//eat all of last color
 		
@@ -70,7 +71,7 @@ public class CompulsiveEater extends Player
 				intLastEatIndex++;
 				continue;
 			}
-			aintInHand[intLastEatIndex] = aintInHand[ eatIndex ] - 1;
+			aintInHand[intLastEatIndex]--;
 			aintTempEat[intLastEatIndex] = 1;
 			intLastEatNum = 1;
 			return;
@@ -85,7 +86,7 @@ public class CompulsiveEater extends Player
 		}
 		else{
 			aintTempEat[ eatIndex ] = 1;
-			aintInHand[ eatIndex ] = aintInHand[ eatIndex ] - 1;
+			aintInHand[ eatIndex ]--;
 		}
 		intLastEatIndex = eatIndex;
 		intLastEatNum = aintTempEat[ eatIndex ];
@@ -118,16 +119,27 @@ public class CompulsiveEater extends Player
 	@Override
 	public void offer( Offer offTemp )
 	{
+<<<<<<< HEAD
 		//Offer ourOffer = offerGen.getOffer();
 		Offer nullOffer = new Offer(intPlayerIndex, intColorNum);
 		//offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
 		offTemp.setOffer(nullOffer.getOffer(), nullOffer.getDesire());
+=======
+		Offer ourOffer = offerGen.getOffer();
+		//System.out.println("our offer is" + ourOffer.toString());
+		//offTemp.setOffer( ourOffer.getOffer(), ourOffer.getDesire() );
+		int[] zeros = {0,0,0,0,0};
+		offTemp.setOffer(zeros, zeros);
+>>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
 	}
 
 	@Override
 	public void syncInHand(int[] aintInHand) 
 	{
 		// TODO Auto-generated method stub
+		for (int i = 0; i < this.aintInHand.length; i++) {
+			this.aintInHand[i] = aintInHand[i];
+		}
 		
 	}
 
@@ -155,7 +167,11 @@ public class CompulsiveEater extends Player
 		/*prefEval.examineIncomeOffers(aoffCurrentOffers);
 		offerGen.setCurrentOffers(aoffCurrentOffers);
 		Offer gonnaPick = offerEval.getBestOffer(aoffCurrentOffers);
+<<<<<<< HEAD
 		if (gonnaPick==null)
+=======
+		if(gonnaPick == null)
+>>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
 			return null;
 		int[] aintOffer = gonnaPick.getOffer();
 		int[] aintDesire = gonnaPick.getDesire();
@@ -184,7 +200,7 @@ public class CompulsiveEater extends Player
 	}
 
 	@Override
-	public void initialize(int intPlayerIndex, String strClassName,	int[] aintInHand) 
+	public void initialize(int intPlayerNum, int intPlayerIndex, String strClassName,	int[] aintInHand) 
 	{
 		this.intPlayerIndex = intPlayerIndex;
 		this.strClassName = strClassName;
@@ -222,6 +238,14 @@ public class CompulsiveEater extends Player
 			}
 		}
 		return true;
+	}
+	
+	public void printInHand(){
+		System.out.print("InHand: ");
+		for (int i = 0; i < aintInHand.length; i++) {
+			System.out.print(aintInHand[i] + " ");
+		}
+		System.out.println();
 	}
 
 	@Override

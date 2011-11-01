@@ -1,8 +1,8 @@
-package skittles.g7.strategy;
+package skittles.g6.strategy;
 
 import java.util.ArrayList;
 
-import skittles.g7.CompulsiveEater;
+import skittles.g6.CompulsiveEater;
 import skittles.sim.Offer;
 
 public class OfferGeneratorImplementer implements OfferGenerator{
@@ -23,12 +23,10 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		turn = 0;
 	}
 	
-	@Override
 	public void setPlayer(CompulsiveEater player) {
 		myCompulsiveEater = player;
 	}
 
-	@Override
 	public void setCurrentOffers(Offer[] offers) {
 		Offer[] offerCopy = new Offer[offers.length];
 		for (int i=0; i<offers.length; i++){
@@ -38,7 +36,6 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		//offersHistory.add(offers);
 	}
 
-	@Override
 	public Offer getOffer() {
 		Offer newOffer = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
 		int[] intOffer = new int[intColorNum];
@@ -76,10 +73,17 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 				intOffer[getLowestPreference()] = 2;
 			}
 		newOffer.setOffer(intOffer, intDesire);
+<<<<<<< HEAD
 		/*if (isOfferCold(newOffer)){
 			//generateNewOffer
 			//perhaps change to 1 and 1
 		}*/
+=======
+		//if (isOfferCold(newOffer)){
+			//generateNewOffer
+			//perhaps change to 1 and 1
+		//}
+>>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
 		turn++;
 		return newOffer;
 	}
@@ -153,8 +157,11 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	 * @param anOffer
 	 * @return
 	 */
+<<<<<<< HEAD
 	
 	// TODO: check for null offers
+=======
+>>>>>>> 3b59ad51c1525d9474ced6afe982fdf9d503cb26
 /*	public boolean isOfferCold(Offer anOffer){
 		int myPlayerIndex = myCompulsiveEater.getPlayerIndex();
 		if (turn > 1){
