@@ -43,13 +43,6 @@ public class CompulsiveEater extends Player
 	{
 		printInHand();
 		int eatIndex = scanForLeastValuable();
-		
-		System.out.print("aintHand: ");
-		for (int i=0; i<intColorNum; i++){
-			System.out.print(aintInHand[i] + ", ");
-		}
-		System.out.println();
-
 		//eat all of last color
 		if(colorsRemaining == 1){
 			aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
