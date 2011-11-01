@@ -42,20 +42,7 @@ public class CompulsiveEater extends Player
 	public void eat( int[] aintTempEat )
 	{
 		printInHand();
-		int eatIndex = scanForLeastValuable();
-		//eat all of last color
 		
-		aintTempEat[ eatIndex ] = aintInHand[ eatIndex ];
-		aintInHand[ eatIndex ] = 0;
-		intLastEatIndex = eatIndex;
-		intLastEatNum = aintTempEat[ eatIndex ];
-		return;
-		
-		/*System.out.print("aintHand: ");
-		for (int i=0; i<intColorNum; i++){
-			System.out.print(aintInHand[i] + ", ");
-		}
-		System.out.println();
 		
 		int eatIndex = scanForLeastValuable();
 		//eat all of last color
@@ -94,7 +81,7 @@ public class CompulsiveEater extends Player
 		if(eatIndex == intLastEatIndex)
 			turnsEatenSame++;
 		else
-			turnsEatenSame = 1;*/
+			turnsEatenSame = 1;
 	}
 	/*
 	 * Returns the index of the lowest value skittle which we have
