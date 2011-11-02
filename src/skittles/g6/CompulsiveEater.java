@@ -1,11 +1,14 @@
 package skittles.g6;
 
+import java.util.ArrayList;
+
 import skittles.g6.strategy.CompulsiveOfferEvaluator;
 import skittles.g6.strategy.InventoryLowerBound;
 import skittles.g6.strategy.InventoryLowerBoundImpl;
 import skittles.g6.strategy.OfferEvaluator;
 import skittles.g6.strategy.OfferGenerator;
 import skittles.g6.strategy.OfferGeneratorImplementer;
+import skittles.g6.strategy.Pair;
 import skittles.g6.strategy.PreferenceEvaluator;
 import skittles.g6.strategy.PreferenceEvaluatorImpl;
 import skittles.sim.*;
@@ -24,6 +27,8 @@ public class CompulsiveEater extends Player
 	private int colorsRemaining;
 	private final double UNKNOWN_TASTE = -.000000121;
 	
+	private int target = -1;
+	
 	//===== EVERYTHING BELOW CAME FROM DumpPlayer ====
 	private int[] aintInHand;
 	private int intColorNum;
@@ -34,6 +39,12 @@ public class CompulsiveEater extends Player
 	private double[] adblTastes;
 	private int intLastEatIndex;
 	private int intLastEatNum;
+	
+	//TODO fill this in
+	private ArrayList<Pair<Integer, Integer>> piles = new ArrayList<Pair<Integer, Integer>>();
+	
+	
+	private ArrayList<Pair<Integer, Integer>> pilesBelowSecondaryThreshold = new ArrayList<Pair<Integer, Integer>>(); 
 	
 //	public DumpPlayer( int[] aintInHand )
 //	{
@@ -271,5 +282,17 @@ public class CompulsiveEater extends Player
 	
 	public int getIntLastEatIndex() {
 		return intLastEatIndex;
+	}
+	
+	public int getTarget() {
+		return target;
+	}
+	
+	public ArrayList<Pair<Integer, Integer>> getPiles() {
+		return piles;
+	}
+	
+	public ArrayList<Pair<Integer, Integer>> getPilesBelowSecondaryThreshold() {
+		return pilesBelowSecondaryThreshold;
 	}
 }
