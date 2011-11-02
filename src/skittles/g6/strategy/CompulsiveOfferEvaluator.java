@@ -33,15 +33,26 @@ public class CompulsiveOfferEvaluator implements OfferEvaluator {
 			for (int i = 0; i < aintDesire.length; i++) {
 				
 				if (i == tastes.length) break;
-				
-				currentScore += tastes[i] * (Math.pow(inHand[i], 2) - Math.pow(inHand[i] + aintDesire[i], 2));
+				//squares of negatives are positive
+				if(tastes[i] == Parameters.UNKNOWN_TASTE)
+					currentScore += tastes[i] * (Math.pow(inHand[i] + aintDesire[i], 2) - Math.pow(inHand[i], 2));
+				else if(tastes[i] > 0)
+					currentScore += -1 * tastes[i] * (Math.pow(inHand[i] + aintDesire[i], 2) - Math.pow(inHand[i], 2));
+				else
+					currentScore += -1 * tastes[i] * aintDesire[i];
 			}
 			int[] aintOffer = currOffer.getOffer();
 			for (int i = 0; i < aintOffer.length; i++) {
 				
 				if (i==tastes.length) break;
 				
-				currentScore += tastes[i] * (Math.pow(inHand[i] + aintOffer[i], 2) - Math.pow(inHand[i], 2));
+				//TODO: possibly tweak offer eval receiving threshold
+				if (tastes[i] == Parameters.UNKNOWN_TASTE)
+					currentScore += -1 * tastes[i] * (Math.pow(inHand[i] + aintOffer[i], 2) - Math.pow(inHand[i], 2));
+				else if(tastes[i] > 0)
+					currentScore += tastes[i] * (Math.pow(inHand[i] + aintOffer[i], 2) - Math.pow(inHand[i], 2));
+				else
+					currentScore += tastes[i] * aintOffer[i];
 			}
 			
 			if(currentScore > maxScore){
