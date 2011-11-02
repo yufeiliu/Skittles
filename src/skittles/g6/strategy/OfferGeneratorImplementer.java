@@ -113,7 +113,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		
 		int tradeAway = myCompulsiveEater.getPilesBelowSecondaryThreshold().get(0).getBack();
 		
-		if (lastTradeAway!=-1) {
+		if (lastTradeAway!=tradeAway) {
 			lastAmount = -1;
 		}
 		
