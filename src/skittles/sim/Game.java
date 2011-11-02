@@ -448,6 +448,7 @@ public class Game
 			else
 			{
 				System.out.println( "Player #" + intPlayerIndex + ": Invalid offer. Shame on you :)" );
+				System.out.println(offTemp.toString());
 				Offer offEmpty = new Offer( intPlayerIndex, intColorNum );
 				alCurrentOffers.add( offEmpty );
 			}
