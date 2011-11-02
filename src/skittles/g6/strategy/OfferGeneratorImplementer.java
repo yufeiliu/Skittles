@@ -43,15 +43,20 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		Offer newOffer = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
 		int[] intOffer = new int[intColorNum];
 		int[] intDesire = new int[intColorNum];
+		//TODO: smaller size in beginning for fewer players, because of law of large numbers
 			if (turn==0){
 				//first check what you ate
 				int lastEatIndex = myCompulsiveEater.getIntLastEatIndex();
 				//Ask for 2 of the last one you ate if its good (>0.5 for now)
 				if (myCompulsiveEater.getPreferences()[lastEatIndex] >= 0.5){
+					
+					
+					
 					intDesire[lastEatIndex] = TEMP_OFFER_SIZE;
 					
 					/* offer 2 skittles of the highest amount you have, unless the highest amount 
 					   skittle is the same as that of the lastEatIndex */
+					//on turn 0 you only know one color
 					int high = getSkittleOfHighestAmount();
 					if (high == lastEatIndex)
 						high = getSkittleOf2ndHighestAmount();

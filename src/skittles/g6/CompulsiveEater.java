@@ -22,7 +22,8 @@ public class CompulsiveEater extends Player
 	private int turnsEatenSame;
 	private int lastEatInv;
 	private int colorsRemaining;
-	private final double UNKNOWN_TASTE = -.000000121;
+	private int targetColor;
+	public static final double UNKNOWN_TASTE = -.000000121;
 	
 	//===== EVERYTHING BELOW CAME FROM DumpPlayer ====
 	private int[] aintInHand;
@@ -54,6 +55,7 @@ public class CompulsiveEater extends Player
 			return;
 		}
 		//try to eat one of every color
+		//TODO: eat most first
 		while(discovery && intLastEatIndex < intColorNum - 1){
 			intLastEatIndex++;
 			if(aintInHand[intLastEatIndex] == 0){
@@ -103,6 +105,18 @@ public class CompulsiveEater extends Player
 			}
 		}
 		return minTasteIndex;
+	}
+	
+	private void refreshTargetColor(){
+		double maxScore = -999999999;
+		int maxIndex = 0;
+		for (int i = 0; i < aintInHand.length; i++) {
+			if(adblTastes[i] * Math.pow(aintInHand[i], 2) > maxScore){
+				maxScore = adblTastes[i] * Math.pow(aintInHand[i], 2);
+				maxIndex = i;
+			}
+		}
+		targetColor = maxIndex;
 	}
 	
 	@Override
