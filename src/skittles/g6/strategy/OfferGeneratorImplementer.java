@@ -16,6 +16,10 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	private int lastAmount = -1; 
 	private int lastTradeAway = -1;
 	
+	private int turnCounter = 0;
+	private int initialInventory = 0;
+	private int pileIterator = 0;
+	
 	public OfferGeneratorImplementer(){
 		offersHistory = new ArrayList<Offer[]>();
 		//piles = new ArrayList<Pair<Integer,Integer>>();
@@ -111,10 +115,20 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		
 		int target = myCompulsiveEater.getTarget();
 		
-		int tradeAway = myCompulsiveEater.getPilesBelowSecondaryThreshold().get(0).getBack();
+		int tradeAway = myCompulsiveEater.getPilesBelowSecondaryThreshold().get(pileIterator).getBack();
 		
 		if (lastTradeAway!=tradeAway) {
+			initialInventory = myCompulsiveEater.getAIntInHand()[tradeAway];
+			turnCounter=0;
 			lastAmount = -1;
+		} else {
+			turnCounter++;
+			
+			if (turnCounter>=Parameters.GIVE_UP_TURNS &&
+					myCompulsiveEater.getAIntInHand()[tradeAway] - initialInventory < Parameters.GIVE_UP_TURNS + 1) {
+				pileIterator = (pileIterator + 1) % myCompulsiveEater.getPilesBelowSecondaryThreshold().size();
+				return getHoardingOffer();
+			}
 		}
 		
 		int amount = 0;
@@ -148,6 +162,12 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		o.setOffer(offered, desired);
 		
 		return o;
+	}
+	
+	//TODO generate best tradeaway color using both my info and other people's preferences
+	private int bestTradeAway() {
+		
+		return -1;
 	}
 	
 	/**
