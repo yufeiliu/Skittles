@@ -153,7 +153,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		
 		int amount = 0;
 		if (lastAmount == -1) {
-			amount = Math.max(myCompulsiveEater.getAIntInHand()[tradeAway] / 4, 0); //changed - possibly were done w that color
+			amount = Math.max(myCompulsiveEater.getAIntInHand()[tradeAway] / 4, 0); //changed - possibly we are done w that color
 		} else {
 			amount = Math.min(lastAmount*5/4, myCompulsiveEater.getAIntInHand()[tradeAway]);
 		}
