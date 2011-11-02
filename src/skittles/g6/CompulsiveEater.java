@@ -141,17 +141,32 @@ public class CompulsiveEater extends Player
 	}
 	
 	private void refreshDiscoveryOrdering(){
-		for (int i = 0; i < aintInHand.length; i++) {
+		for (int i = 0; i < piles.size(); i++) {
 			if(aintInHand[piles.get(i).getBack()] != piles.get(i).getFront())
 				piles.set(i, new Pair<Integer, Integer>(aintInHand[piles.get(i).getBack()], piles.get(i).getBack()));
 		}
 	}
 	
-	private void createBelowSecondaryOrdering(){
-		for (int i = 0; i < aintInHand.length; i++) {
-			if(adblTastes[i] < Parameters.SECONDARY_THRESHOLD)
+	private void refreshBelowSecondaryOrdering(){
+		for (int i = 0; i < pilesBelowSecondaryThreshold.size(); i++) {
+			if(aintInHand[pilesBelowSecondaryThreshold.get(i).getBack()] != pilesBelowSecondaryThreshold.get(i).getFront())
+				pilesBelowSecondaryThreshold.set(i, new Pair<Integer, Integer>(aintInHand[piles.get(i).getBack()], 
+						pilesBelowSecondaryThreshold.get(i).getBack()));
+		}
+		Collections.sort(pilesBelowSecondaryThreshold);
+	}
+	
+	/*private void createBelowSecondaryOrdering(){
+		for (int i = 0; i < pilesBelowSecondaryThreshold.size(); i++) {
+			if(adblTastes[i] < Parameters.SECONDARY_THRESHOLD && adblTastes[i] != Parameters.UNKNOWN_TASTE)
 				pilesBelowSecondaryThreshold.add(new Pair<Integer, Integer>(aintInHand[i], i));
 		}
+		Collections.sort(pilesBelowSecondaryThreshold);
+	}*/
+	
+	private void refreshCreateBelowSecondaryOrdering(){
+		if(adblTastes[intLastEatIndex] < Parameters.SECONDARY_THRESHOLD)
+			pilesBelowSecondaryThreshold.add(new Pair<Integer, Integer>(aintInHand[intLastEatIndex], intLastEatIndex));
 		Collections.sort(pilesBelowSecondaryThreshold);
 	}
 	
@@ -161,7 +176,6 @@ public class CompulsiveEater extends Player
 			if(adblTastes[back] >= Parameters.PRIMARY_THRESHOLD){
 				target = back;
 				initialTargetInventory = piles.get(discoveryIndex).getFront();
-				createBelowSecondaryOrdering();
 			}
 			return;
 		}
@@ -196,9 +210,14 @@ public class CompulsiveEater extends Player
 		Offer ourOffer = new Offer(intPlayerIndex, intColorNum);
 		if(discoveryIndex < intColorNum){
 			refreshTargetColor();
+			refreshCreateBelowSecondaryOrdering();
 		}
-		else if(target == -1)
+		else if(target == -1){
 			setTargetAsMax();
+			refreshBelowSecondaryOrdering();
+		}
+		else
+			refreshBelowSecondaryOrdering();
 		ourOffer = offerGen.getOffer();
 		offTemp.setOffer(ourOffer.getOffer(), ourOffer.getDesire());
 
