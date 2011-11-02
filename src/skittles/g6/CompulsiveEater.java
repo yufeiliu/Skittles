@@ -42,18 +42,11 @@ public class CompulsiveEater extends Player
 	double dblHappiness;
 	String strClassName;
 	int intPlayerIndex;
+	//
 	
 	private double[] adblTastes;
 	private int intLastEatIndex;
 	private int intLastEatNum;
-	
-	
-//	public DumpPlayer( int[] aintInHand )
-//	{
-//		this.aintInHand = aintInHand;
-//		intColorNum = aintInHand.length;
-//		dblHappiness = 0;
-//	}
 
 	@Override
 	public void eat( int[] aintTempEat )
@@ -200,11 +193,13 @@ public class CompulsiveEater extends Player
 	@Override
 	public void offer( Offer offTemp )
 	{
-		if(discoveryIndex < intColorNum)
+		Offer ourOffer = new Offer(intPlayerIndex, intColorNum);
+		if(discoveryIndex < intColorNum){
 			refreshTargetColor();
+		}
 		else if(target == -1)
 			setTargetAsMax();
-		Offer ourOffer = offerGen.getOffer();
+		ourOffer = offerGen.getOffer();
 		offTemp.setOffer(ourOffer.getOffer(), ourOffer.getDesire());
 
 	}

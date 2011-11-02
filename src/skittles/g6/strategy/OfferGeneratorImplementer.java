@@ -12,18 +12,16 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	CompulsiveEater myCompulsiveEater;
 	ArrayList<Offer[]> offersHistory;
 	int intColorNum;
-	int turn;
-	final int TEMP_OFFER_SIZE = 2;
 	
 	public OfferGeneratorImplementer(){
 		offersHistory = new ArrayList<Offer[]>();
-		turn = 0;
+		//piles = new ArrayList<Pair<Integer,Integer>>();
 	}
 	
 	public OfferGeneratorImplementer(int intColorNum){
 		offersHistory = new ArrayList<Offer[]>();
 		this.intColorNum = intColorNum;
-		turn = 0;
+		//piles = new ArrayList<Pair<Integer,Integer>>();
 	}
 	
 	public void setPlayer(CompulsiveEater player) {
@@ -36,58 +34,21 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 			offerCopy[i] = offers[i];
 		}
 		offersHistory.add(offerCopy);
-		//offersHistory.add(offers);
 	}
 
 	public Offer getOffer() {
 		Offer newOffer = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
-		int[] intOffer = new int[intColorNum];
-		int[] intDesire = new int[intColorNum];
 		//TODO: smaller size in beginning for fewer players, because of law of large numbers
-			if (turn==0){
-				//first check what you ate
-				int lastEatIndex = myCompulsiveEater.getIntLastEatIndex();
-				//Ask for 2 of the last one you ate if its good (>0.5 for now)
-				if (myCompulsiveEater.getPreferences()[lastEatIndex] >= 0.5){
-					
-					
-					
-					intDesire[lastEatIndex] = TEMP_OFFER_SIZE;
-					
-					/* offer 2 skittles of the highest amount you have, unless the highest amount 
-					   skittle is the same as that of the lastEatIndex */
-					//on turn 0 you only know one color
-					int high = getSkittleOfHighestAmount();
-					if (high == lastEatIndex)
-						high = getSkittleOf2ndHighestAmount();
-					intOffer[high] = TEMP_OFFER_SIZE;
-					
-				}
-				else {//if(myCompulsiveEater.getPreferences()[lastEatIndex] < 0){
-					intOffer[lastEatIndex] = TEMP_OFFER_SIZE;
-					
-					/* offer 2 skittles of the last one you ate b/c you don't like it
-					 * ask for 2 skittles of the lowest amount you have, or 
-					 * 2 skittles of 2ndLowestAmount if lowest amount is of lastEatIndex 
-					 */
-					int low = getSkittleOfLowestAmount();
-					if (low == lastEatIndex)
-						low = getSkittleOf2ndLowestAmount();
-					intDesire[low] = TEMP_OFFER_SIZE;
-				}
-			}
-			else{
-				intDesire[getHighestPreference()] = TEMP_OFFER_SIZE;
-				intOffer[getLowestPreference()] = TEMP_OFFER_SIZE;
-			}
-		newOffer.setOffer(intOffer, intDesire);
-
+		if (myCompulsiveEater.getTarget() == -1){
+			newOffer = getSteppingOffer();
+		}
+		else{
+			newOffer = getHoardingOffer();
+		}
 		/*if (isOfferCold(newOffer)){
 			//generateNewOffer
 			//perhaps change to 1 and 1
 		}*/
-
-		turn++;
 		return newOffer;
 	}
 
@@ -114,58 +75,6 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		return preferencesAndColors.get(preferencesAndColors.size()-1).getBack();
 	}
 	
-	/*
-	 * Below are methods based on the amount of skittles you have.
-	 */
-	
-	public int getSkittleOfHighestAmount(){
-		int[] aintInHand = myCompulsiveEater.getAIntInHand();
-		int maxValue = 0;
-		for (int i=0; i<aintInHand.length; i++){
-			if (aintInHand[i] > aintInHand[maxValue])
-				maxValue = i;
-		}
-		return maxValue;
-	}
-	
-	public int getSkittleOfLowestAmount(){
-		int[] aintInHand = myCompulsiveEater.getAIntInHand();
-		int minValue = 0;
-		for (int i=0; i<aintInHand.length; i++){
-			if (aintInHand[i] < aintInHand[minValue])
-				minValue = i;
-		}
-		return minValue;
-	}
-	
-	public int getSkittleOf2ndHighestAmount(){
-		int[] aintInHand = myCompulsiveEater.getAIntInHand();
-		int high = getSkittleOfHighestAmount();
-		int maxValue = 0;
-		for (int i=0; i<aintInHand.length; i++){
-			if (i == high){}
-			else{
-				if (aintInHand[i] > aintInHand[maxValue])
-					maxValue = i;
-			}
-		}
-		return maxValue;
-	}
-	
-	public int getSkittleOf2ndLowestAmount(){
-		int[] aintInHand = myCompulsiveEater.getAIntInHand();
-		int low = getSkittleOfHighestAmount();
-		int minValue = 0;
-		for (int i=0; i<aintInHand.length; i++){
-			if (i == low){}
-			else{
-				if (aintInHand[i] < aintInHand[minValue])
-					minValue = i;
-			}
-		}
-		return minValue;
-	}
-	
 	/**
 	 * check if Offer is cold by checking against previous two offers
 	 * if previous two offers are the same as your current offer, then
@@ -187,22 +96,73 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		return false;
 	}*/
 	
-	public boolean compareOffers(Offer offer1, Offer offer2){
+	/*public boolean compareOffers(Offer offer1, Offer offer2){
 		for (int i=0; i<intColorNum; i++){
 			if (offer1.getOffer()[i] != offer2.getOffer()[i])
 				return false;
 		}
 		return true;
-	}
+	}*/
 	
 	public Offer getHoardingOffer() {
 		//TODO stub
 		return null;
 	}
 	
+	/**
+	 * gets Offers before having found a value over the threshold
+	 * @return
+	 */
 	public Offer getSteppingOffer() {
-		//TODO stub
-		return null;
+		Offer newOffer = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
+		
+		int currentTurn = myCompulsiveEater.getTurnCounter();
+		ArrayList<Pair<Integer, Integer>> piles = myCompulsiveEater.getPiles();
+		ArrayList<Pair<Integer, Integer>> pilesBelowSecondaryThreshold = myCompulsiveEater.getPilesBelowSecondaryThreshold();
+		
+		int[] aintOffer = new int[intColorNum];
+		int[] aintDesire = new int[intColorNum];
+		int lastEatIndex = myCompulsiveEater.getIntLastEatIndex();
+		int tradeAmount = 0;
+		Pair<Integer, Integer> currentColor = piles.get(currentTurn);
+		Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
+		
+		//This if check may be redundant. Player shouldn't call getSteppingOffer if this is the case.
+		if (myCompulsiveEater.getPreferences()[lastEatIndex] >= Parameters.PRIMARY_THRESHOLD){
+			return getHoardingOffer();
+		}
+		
+		else{
+			if (currentTurn == 0){ //if first turn	
+			//can maybe combine turn 0 with turn 1 to turn intColorNum-1
+				//if (myCompulsiveEater.getPreferences()[lastEatIndex] < Parameters.SECONDARY_THRESHOLD){
+					tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
+					aintOffer[currentColor.getBack()] = tradeAmount;
+					aintDesire[nextColor.getBack()] = tradeAmount;
+				/*}
+				else{ //SECONDARY_THRESHOLD < currentPreference < PRIMARY_THRESHOLD
+					
+				}*/
+			}
+			else if (currentTurn>=1 && currentTurn<intColorNum){
+				//if (myCompulsiveEater.getPreferences()[lastEatIndex] < Parameters.SECONDARY_THRESHOLD){
+					tradeAmount = pilesBelowSecondaryThreshold.get(0).getFront()/Parameters.BIG_AMOUNT_DIVISOR;
+					aintOffer[pilesBelowSecondaryThreshold.get(0).getBack()] = tradeAmount;
+					aintDesire[nextColor.getBack()] = tradeAmount;
+				/*}
+				else{  //SECONDARY_THRESHOLD < currentPreference < PRIMARY_THRESHOLD
+					
+				}*/
+			}
+			else{ //if currentTurn == intColorNum
+				tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
+				aintOffer[getLowestPreference()] = tradeAmount;
+				aintDesire[getHighestPreference()] = tradeAmount;
+			}
+		}
+		
+		newOffer.setOffer(aintOffer, aintDesire);
+		return newOffer;
 	}
 }
 
