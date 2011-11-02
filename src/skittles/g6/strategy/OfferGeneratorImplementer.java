@@ -20,6 +20,8 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	private int initialInventory = 0;
 	private int pileIterator = 0;
 	
+	private boolean alternativeMode = false;
+	
 	public OfferGeneratorImplementer(){
 		offersHistory = new ArrayList<Offer[]>();
 		//piles = new ArrayList<Pair<Integer,Integer>>();
@@ -128,9 +130,10 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 					colorOfIt = i;
 				}
 			}
-			
+			alternativeMode = true;
 			tradeAway = colorOfIt;
 		} else {
+			alternativeMode = false;
 			tradeAway = myCompulsiveEater.getPilesBelowSecondaryThreshold().get(pileIterator).getBack();
 		}
 		
@@ -138,7 +141,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 			initialInventory = myCompulsiveEater.getAIntInHand()[tradeAway];
 			turnCounter=0;
 			lastAmount = -1;
-		} else {
+		} else if (!alternativeMode) {
 			turnCounter++;
 			
 			if (turnCounter>=Parameters.GIVE_UP_TURNS &&
@@ -150,7 +153,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		
 		int amount = 0;
 		if (lastAmount == -1) {
-			amount = Math.max(myCompulsiveEater.getAIntInHand()[tradeAway] / 4, 1);
+			amount = Math.max(myCompulsiveEater.getAIntInHand()[tradeAway] / 4, 0); //changed - possibly were done w that color
 		} else {
 			amount = Math.min(lastAmount*5/4, myCompulsiveEater.getAIntInHand()[tradeAway]);
 		}
