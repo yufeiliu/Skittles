@@ -36,6 +36,15 @@ public class Offer
 			if ( intOfferCount != intDesireCount )
 			{
 				System.out.println( "Player #" + intOfferedByIndex + "'s offer is invalid" );
+				System.out.print("offer: ");
+				for (int i=0; i<intColorNum; i++){
+					System.out.print(aintOffer[i] + ", ");
+				}
+				System.out.println();
+				System.out.print("desire: ");
+				for (int j=0; j<intColorNum; j++){
+					System.out.print(aintDesire[j] + ", ");
+				}
 			}
 			else
 			{

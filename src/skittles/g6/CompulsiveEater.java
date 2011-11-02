@@ -51,7 +51,7 @@ public class CompulsiveEater extends Player
 	@Override
 	public void eat( int[] aintTempEat )
 	{
-		printInHand();
+		//printInHand();
 		
 		turnCounter++;
 		int eatIndex = scanForLeastValuable();

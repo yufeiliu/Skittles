@@ -240,13 +240,14 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 				}*/
 			}
 			else{  //SECONDARY_THRESHOLD < currentPreference < PRIMARY_THRESHOLD
-				tradeAmount = currentColor.getFront();
+				tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
 				aintOffer[currentColor.getBack()] = tradeAmount;
 				aintDesire[piles.get(0).getBack()] = tradeAmount; 
 			}
 		}
 		else{ //if currentTurn == intColorNum -1
-			tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
+			//tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
+			tradeAmount = piles.get(getLowestPreference()).getFront()/Parameters.BIG_AMOUNT_DIVISOR;
 			aintOffer[getLowestPreference()] = tradeAmount;
 			aintDesire[getHighestPreference()] = tradeAmount;
 		}
