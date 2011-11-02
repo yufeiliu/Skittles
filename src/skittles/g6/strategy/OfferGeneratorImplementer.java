@@ -9,9 +9,12 @@ import skittles.sim.Offer;
 
 public class OfferGeneratorImplementer implements OfferGenerator{
 
-	CompulsiveEater myCompulsiveEater;
-	ArrayList<Offer[]> offersHistory;
-	int intColorNum;
+	private CompulsiveEater myCompulsiveEater;
+	private ArrayList<Offer[]> offersHistory;
+	private int intColorNum;
+	
+	private int lastAmount = -1; 
+	private int lastTradeAway = -1;
 	
 	public OfferGeneratorImplementer(){
 		offersHistory = new ArrayList<Offer[]>();
@@ -105,8 +108,46 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	}*/
 	
 	public Offer getHoardingOffer() {
-		//TODO stub
-		return null;
+		
+		int target = myCompulsiveEater.getTarget();
+		
+		int tradeAway = myCompulsiveEater.getPilesBelowSecondaryThreshold().get(0).getBack();
+		
+		if (lastTradeAway!=-1) {
+			lastAmount = -1;
+		}
+		
+		int amount = 0;
+		if (lastAmount == -1) {
+			amount = Math.max(myCompulsiveEater.getAIntInHand()[tradeAway] / 4, 1);
+		} else {
+			amount = Math.min(lastAmount*5/4, myCompulsiveEater.getAIntInHand()[tradeAway]);
+		}
+		
+		lastAmount = amount;
+		lastTradeAway = tradeAway;
+		
+		int[] offered = new int[intColorNum];
+		int[] desired = new int[intColorNum];
+		
+		for (int i = 0; i < intColorNum; i++) {
+			if (i==target) {
+				desired[i]=amount;
+			} else {
+				desired[i]=0;
+			}
+			
+			if (i==tradeAway) {
+				offered[i]=amount;
+			} else {
+				offered[i]=0;
+			}
+		}
+		
+		Offer o = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
+		o.setOffer(offered, desired);
+		
+		return o;
 	}
 	
 	/**
