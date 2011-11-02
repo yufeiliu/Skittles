@@ -63,8 +63,8 @@ public class CompulsiveEater extends Player
 		turnCounter++;
 		int eatIndex = scanForLeastValuable();
 		//self-destruct if nothing remaining under secondary threshold
-		//TODO: set threshold for turnsSinceLastTrade
-		if(eatIndex == -1 || turnsSinceLastTrade > 1000){
+		//TODO: set threshold for turnsSinceLastTrade or for only positives left
+		if(eatIndex == -1 || turnsSinceLastTrade > 1003){
 			for (int i = 0; i < aintInHand.length; i++) {
 				aintTempEat[ i ] = aintInHand[ i ];
 				aintInHand[ i ] = 0;
@@ -184,9 +184,9 @@ public class CompulsiveEater extends Player
 		}
 	}
 	
-	//used if none above secondary threshold
+	//used if none above secondary threshold. sets greatest positive as max
 	public void setTargetAsMax(){
-		double maxScore = -2;
+		double maxScore = 0;
 		int targetIndex = 0;
 		for (int i = 0; i < aintInHand.length; i++) {
 			if(adblTastes[i] > maxScore){
@@ -202,6 +202,8 @@ public class CompulsiveEater extends Player
 	{
 		if(discoveryIndex < intColorNum)
 			refreshTargetColor();
+		else if(target == -1)
+			setTargetAsMax();
 		Offer ourOffer = offerGen.getOffer();
 		offTemp.setOffer(ourOffer.getOffer(), ourOffer.getDesire());
 
