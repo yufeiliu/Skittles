@@ -115,7 +115,24 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		
 		int target = myCompulsiveEater.getTarget();
 		
-		int tradeAway = myCompulsiveEater.getPilesBelowSecondaryThreshold().get(pileIterator).getBack();
+		int tradeAway;
+		if (myCompulsiveEater.getPilesBelowSecondaryThreshold().isEmpty()) {
+			int minQuantity = Integer.MAX_VALUE;
+			int colorOfIt = 0;
+			
+			for (int i = 0; i < myCompulsiveEater.getAIntInHand().length; i++) {
+				if (i==target) continue;
+				
+				if (myCompulsiveEater.getAIntInHand()[i] < minQuantity) {
+					minQuantity = myCompulsiveEater.getAIntInHand()[i];
+					colorOfIt = i;
+				}
+			}
+			
+			tradeAway = colorOfIt;
+		} else {
+			tradeAway = myCompulsiveEater.getPilesBelowSecondaryThreshold().get(pileIterator).getBack();
+		}
 		
 		if (lastTradeAway!=tradeAway) {
 			initialInventory = myCompulsiveEater.getAIntInHand()[tradeAway];
@@ -179,12 +196,16 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		
 		int currentTurn = myCompulsiveEater.getTurnCounter();
 		ArrayList<Pair<Integer, Integer>> piles = myCompulsiveEater.getPiles();
+		
 		ArrayList<Pair<Integer, Integer>> pilesBelowSecondaryThreshold = myCompulsiveEater.getPilesBelowSecondaryThreshold();
 		
 		int[] aintOffer = new int[intColorNum];
 		int[] aintDesire = new int[intColorNum];
 		int lastEatIndex = myCompulsiveEater.getIntLastEatIndex();
 		int tradeAmount = 0;
+		
+		if (currentTurn >= piles.size()) return getHoardingOffer();
+		
 		Pair<Integer, Integer> currentColor = piles.get(currentTurn);
 		
 		
