@@ -207,45 +207,48 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		int lastEatIndex = myCompulsiveEater.getIntLastEatIndex();
 		int tradeAmount = 0;
 		
-		if (currentTurn >= piles.size()) return getHoardingOffer();
-		
-		Pair<Integer, Integer> currentColor = piles.get(currentTurn);
-		
-		
 		//This if check may be redundant. Player shouldn't call getSteppingOffer if this is the case.
-		if (myCompulsiveEater.getPreferences()[lastEatIndex] >= Parameters.PRIMARY_THRESHOLD){
+		if (myCompulsiveEater.getPreferences()[lastEatIndex] >= Parameters.PRIMARY_THRESHOLD
+				|| currentTurn >= intColorNum){
 			return getHoardingOffer();
 		}
+				
+		Pair<Integer, Integer> currentColor = piles.get(currentTurn);
 		
-		else{
-			if (currentTurn == 0){ //if first turn	
-			//can maybe combine turn 0 with turn 1 to turn intColorNum-1
-				//if (myCompulsiveEater.getPreferences()[lastEatIndex] < Parameters.SECONDARY_THRESHOLD){
-					Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
-					tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
-					aintOffer[currentColor.getBack()] = tradeAmount;
-					aintDesire[nextColor.getBack()] = tradeAmount;
-				/*}
-				else{ //SECONDARY_THRESHOLD < currentPreference < PRIMARY_THRESHOLD
-					
-				}*/
+		if (currentTurn == 0){ //if first turn	
+		//can maybe combine turn 0 with turn 1 to turn intColorNum-1
+			if (myCompulsiveEater.getPreferences()[lastEatIndex] < Parameters.SECONDARY_THRESHOLD){
+				Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
+				tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
+				aintOffer[currentColor.getBack()] = tradeAmount;
+				aintDesire[nextColor.getBack()] = tradeAmount;
 			}
-			else if (currentTurn>=1 && currentTurn<intColorNum-1){
-				//if (myCompulsiveEater.getPreferences()[lastEatIndex] < Parameters.SECONDARY_THRESHOLD){
-					Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
+			else{ //SECONDARY_THRESHOLD < currentPreference < PRIMARY_THRESHOLD
+				
+			}
+		}
+		else if (currentTurn>=1 && currentTurn<intColorNum-1){
+			if (myCompulsiveEater.getPreferences()[lastEatIndex] < Parameters.SECONDARY_THRESHOLD){
+				Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
+				//if (pilesBelowSecondaryThreshold.size()>0){
 					tradeAmount = pilesBelowSecondaryThreshold.get(0).getFront()/Parameters.BIG_AMOUNT_DIVISOR;
 					aintOffer[pilesBelowSecondaryThreshold.get(0).getBack()] = tradeAmount;
 					aintDesire[nextColor.getBack()] = tradeAmount;
-				/*}
-				else{  //SECONDARY_THRESHOLD < currentPreference < PRIMARY_THRESHOLD
-					
+				//}
+				/*else{
+					tradeAmount = 
 				}*/
 			}
-			else{ //if currentTurn == intColorNum
-				tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
-				aintOffer[getLowestPreference()] = tradeAmount;
-				aintDesire[getHighestPreference()] = tradeAmount;
+			else{  //SECONDARY_THRESHOLD < currentPreference < PRIMARY_THRESHOLD
+				tradeAmount = currentColor.getFront();
+				aintOffer[currentColor.getBack()] = tradeAmount;
+				aintDesire[piles.get(0).getBack()] = tradeAmount; 
 			}
+		}
+		else{ //if currentTurn == intColorNum -1
+			tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
+			aintOffer[getLowestPreference()] = tradeAmount;
+			aintDesire[getHighestPreference()] = tradeAmount;
 		}
 		
 		newOffer.setOffer(aintOffer, aintDesire);
