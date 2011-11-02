@@ -51,7 +51,10 @@ public class CompulsiveEater extends Player
 	@Override
 	public void eat( int[] aintTempEat )
 	{
-		printInHand();
+<<<<<<< HEAD
+		//printInHand();
+=======
+>>>>>>> 061b4e1b278922644ea754f4ab6704726b507529
 		
 		turnCounter++;
 		int eatIndex = scanForLeastValuable();
@@ -59,10 +62,12 @@ public class CompulsiveEater extends Player
 		//TODO: set threshold for turnsSinceLastTrade or for only positives left
 		if(eatIndex == -1 || turnsSinceLastTrade > 1003){
 			for (int i = 0; i < aintInHand.length; i++) {
-				aintTempEat[ i ] = aintInHand[ i ];
-				aintInHand[ i ] = 0;
+				if(aintInHand[i] > 0){
+					aintTempEat[ i ] = aintInHand[ i ];
+					aintInHand[ i ] = 0;
+					return;
+				}
 			}
-			return;
 		}
 		//eat all of last color if positive taste
 		if(colorsRemaining == 1 && adblTastes[eatIndex] >= 0){
@@ -208,8 +213,9 @@ public class CompulsiveEater extends Player
 	public void offer( Offer offTemp )
 	{
 		Offer ourOffer = new Offer(intPlayerIndex, intColorNum);
-		if(discoveryIndex < intColorNum){
+		if(discovery){
 			refreshTargetColor();
+			refreshBelowSecondaryOrdering();
 			refreshCreateBelowSecondaryOrdering();
 		}
 		else if(target == -1){
@@ -245,7 +251,7 @@ public class CompulsiveEater extends Player
 		{
 			if ( adblTastes[ intLastEatIndex ] != dblHappinessPerCandy )
 			{
-				System.out.println( "Error: Inconsistent color happiness!" );
+				//System.out.println( "Error: Inconsistent color happiness!" );
 			}
 		}
 	}
