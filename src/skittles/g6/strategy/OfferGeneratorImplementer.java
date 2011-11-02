@@ -186,7 +186,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		int lastEatIndex = myCompulsiveEater.getIntLastEatIndex();
 		int tradeAmount = 0;
 		Pair<Integer, Integer> currentColor = piles.get(currentTurn);
-		Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
+		
 		
 		//This if check may be redundant. Player shouldn't call getSteppingOffer if this is the case.
 		if (myCompulsiveEater.getPreferences()[lastEatIndex] >= Parameters.PRIMARY_THRESHOLD){
@@ -197,6 +197,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 			if (currentTurn == 0){ //if first turn	
 			//can maybe combine turn 0 with turn 1 to turn intColorNum-1
 				//if (myCompulsiveEater.getPreferences()[lastEatIndex] < Parameters.SECONDARY_THRESHOLD){
+					Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
 					tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
 					aintOffer[currentColor.getBack()] = tradeAmount;
 					aintDesire[nextColor.getBack()] = tradeAmount;
@@ -205,8 +206,9 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 					
 				}*/
 			}
-			else if (currentTurn>=1 && currentTurn<intColorNum){
+			else if (currentTurn>=1 && currentTurn<intColorNum-1){
 				//if (myCompulsiveEater.getPreferences()[lastEatIndex] < Parameters.SECONDARY_THRESHOLD){
+					Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
 					tradeAmount = pilesBelowSecondaryThreshold.get(0).getFront()/Parameters.BIG_AMOUNT_DIVISOR;
 					aintOffer[pilesBelowSecondaryThreshold.get(0).getBack()] = tradeAmount;
 					aintDesire[nextColor.getBack()] = tradeAmount;
