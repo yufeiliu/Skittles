@@ -448,8 +448,8 @@ public class Game
 			else
 			{
 				System.out.println( "Player #" + intPlayerIndex + ": Invalid offer. Shame on you :)" );
-<<<<<<< HEAD
-				System.out.print("offer: ");
+
+				/*System.out.print("offer: ");
 				for (int i=0; i<intColorNum; i++){
 					System.out.print(offTemp.getOffer()[i] + ", ");
 				}
@@ -457,10 +457,10 @@ public class Game
 				System.out.print("desire: ");
 				for (int j=0; j<intColorNum; j++){
 					System.out.print(offTemp.getDesire()[j] + ", ");
-				}
-=======
+				}*/
+
 				System.out.println(offTemp.toString());
->>>>>>> 061b4e1b278922644ea754f4ab6704726b507529
+
 				Offer offEmpty = new Offer( intPlayerIndex, intColorNum );
 				alCurrentOffers.add( offEmpty );
 			}
