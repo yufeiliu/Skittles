@@ -42,6 +42,7 @@ public class CompulsiveEater extends Player
 	double dblHappiness;
 	String strClassName;
 	int intPlayerIndex;
+	int playerNum;
 	//
 	
 	private double[] adblTastes;
@@ -298,6 +299,7 @@ public class CompulsiveEater extends Player
 		this.intPlayerIndex = intPlayerIndex;
 		this.strClassName = strClassName;
 		this.aintInHand = aintInHand;
+		this.playerNum = intPlayerNum;
 		intColorNum = aintInHand.length;
 		turnsEatenSame = 0;
 		turnCounter = -1;
@@ -381,6 +383,10 @@ public class CompulsiveEater extends Player
 	
 	public int getTurnCounter() {
 		return turnCounter;
+	}
+	
+	public int getPlayerNum() {
+		return playerNum;
 	}
 	
 	public double[] getPreferences() {
