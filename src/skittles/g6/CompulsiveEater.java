@@ -192,7 +192,7 @@ public class CompulsiveEater extends Player
 		
 		//TODO: Tweak these params
 		if((tasteDiff = adblTastes[back] - adblTastes[target]) > 0){
-			tasteDiff *= 2.5;
+			tasteDiff *= 4.0;
 			double inventoryDiff = 3.0 * (aintInHand[target] - aintInHand[back]) / totalSkittles;
 			double liquidity = 1.0 * (aintInHand[target] - initialTargetInventory) / aintInHand[target]; 
 			if(tasteDiff - inventoryDiff - liquidity > .15){
