@@ -31,6 +31,7 @@ public class CompulsiveEater extends Player
 	private int totalSkittles;
 	private int initialTargetInventory;
 	private int discoveryIndex;
+	private boolean negativesRemain;
 	
 	private ArrayList<Pair<Integer, Integer>> piles = new ArrayList<Pair<Integer, Integer>>();
 	private ArrayList<Pair<Integer, Integer>> pilesBelowSecondaryThreshold = new ArrayList<Pair<Integer, Integer>>(); 
@@ -59,7 +60,7 @@ public class CompulsiveEater extends Player
 		int eatIndex = scanForLeastValuable();
 		//self-destruct if nothing remaining under secondary threshold
 		//TODO: set threshold for turnsSinceLastTrade or for only positives left
-		if(eatIndex == -1 || turnsSinceLastTrade > 1003){
+		if(!negativesRemain && turnsSinceLastTrade > pilesBelowSecondaryThreshold.size()){
 			for (int i = 0; i < aintInHand.length; i++) {
 				if(aintInHand[i] > 0){
 					aintTempEat[ i ] = aintInHand[ i ];
@@ -124,11 +125,12 @@ public class CompulsiveEater extends Player
 			}
 		}
 		if(minDistanceFromZero == 2){
+			negativesRemain = false;
 			for(int i = 0; i < intColorNum; i++){
 				if(aintInHand[i] == 0){
 					continue;
 				}
-				if(Math.abs(adblTastes[i]) < minDistanceFromZero && adblTastes[i] < Parameters.PRIMARY_THRESHOLD){
+				if(Math.abs(adblTastes[i]) < minDistanceFromZero && adblTastes[i] < Parameters.SECONDARY_THRESHOLD){
 					minDistanceFromZero = Math.abs(adblTastes[i]); 
 					minTasteIndex = i;
 				}
@@ -184,11 +186,12 @@ public class CompulsiveEater extends Player
 			return;
 		}
 		double tasteDiff;
+		
 		//TODO: Tweak these params
 		if((tasteDiff = adblTastes[back] - adblTastes[target]) > 0){
-			double inventoryDiff = 2.0 * (aintInHand[target] - aintInHand[back]) / totalSkittles;
+			double inventoryDiff = 5.0 * (aintInHand[target] - aintInHand[back]) / totalSkittles;
 			double liquidity = 1.0 * (aintInHand[target] - initialTargetInventory) / aintInHand[target]; 
-			if((tasteDiff + inventoryDiff + liquidity) / 3 > .5){
+			if((tasteDiff - inventoryDiff + liquidity) / 3 > .5){
 				target = back;
 				initialTargetInventory = piles.get(discoveryIndex).getFront();
 			}
@@ -304,6 +307,7 @@ public class CompulsiveEater extends Player
 		turnsEatenSame = 0;
 		turnCounter = -1;
 		target = -1;
+		negativesRemain = true;
 		intLastEatIndex = -1;
 		discoveryIndex = -1;
 		turnsSinceLastTrade = 0;
