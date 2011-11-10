@@ -60,10 +60,10 @@ public class CompulsiveEater extends Player
 		int eatIndex = scanForLeastValuable();
 		//self-destruct if nothing remaining under secondary threshold
 		//TODO: set threshold for turnsSinceLastTrade or for only positives left
-		if((eatIndex == -1 || !negativesRemain) && turnsSinceLastTrade > pilesBelowSecondaryThreshold.size()){
+
+		if(eatIndex == -1 || (!negativesRemain && turnsSinceLastTrade > pilesBelowSecondaryThreshold.size())){
 			
 			System.out.println("*************************** SELF DESTRUCT");
-			
 			for (int i = 0; i < aintInHand.length; i++) {
 				if(aintInHand[i] > 0){
 					aintTempEat[ i ] = aintInHand[ i ];
