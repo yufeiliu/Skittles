@@ -55,6 +55,11 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		}
 		else{
 			newOffer = getHoardingOffer();
+			
+			System.out.println(myCompulsiveEater.getTarget());
+			System.out.println("^^^^^^^^");
+			System.out.println(newOffer);
+			
 		}
 		/*if (isOfferCold(newOffer)){
 			//generateNewOffer
