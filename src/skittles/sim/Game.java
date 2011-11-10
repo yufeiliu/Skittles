@@ -5,6 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -25,6 +26,8 @@ public class Game
 	private int intColorNum;
 	
 	private double storedScore = 0;
+	
+	public int rank;
 	
 	private Offer[] aoffCurrentOffers = null;
 	private int[][] aintCurrentEats = null;
@@ -192,12 +195,29 @@ public class Game
 			dblAver += plsTemp.getHappiness();
 		}
 		dblAver = dblAver / intPlayerNum;
+		
+		ArrayList<Double> allScores = new ArrayList<Double>();
+		
 		for ( PlayerStatus plsTemp : aplsPlayerStatus )
 		{
 			double dblTempHappy = plsTemp.getHappiness() + dblAver;
 			System.out.println( "Player #" + plsTemp.getPlayerIndex() + "'s happiness is: " + dblTempHappy );
+			allScores.add(dblTempHappy);
+			
 			if (aplyPlayers[plsTemp.getPlayerIndex()].getClassName().equals("CompulsiveEater"))
 				storedScore = dblTempHappy;
+		}
+		
+		Collections.sort(allScores);
+		Collections.reverse(allScores);
+		
+		rank = 1;
+		
+		for (double curScore : allScores) {
+			if (curScore==storedScore) {
+				break;
+			}
+			rank++;
 		}
 		
 		try {

@@ -20,6 +20,8 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	private int initialInventory = 0;
 	private int pileIterator = 0;
 	
+	private int prevInventory = -1;
+	
 	private int stopRecursiveInfiniteLoop = 10;
 	
 	private boolean alternativeMode = false;
@@ -144,16 +146,10 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 			tradeAway = myCompulsiveEater.getPilesBelowSecondaryThreshold().get(pileIterator).getBack();
 		}
 		
-		if (lastTradeAway!=tradeAway) {
-			initialInventory = myCompulsiveEater.getAIntInHand()[tradeAway];
-			turnCounter=0;
-			lastAmount = -1;
-		} else if (!alternativeMode) {
+		//tradeAway can't be target
+		if (tradeAway == target) {
 			turnCounter++;
-			
-			if (turnCounter>=Parameters.GIVE_UP_TURNS &&
-					myCompulsiveEater.getAIntInHand()[tradeAway] - initialInventory < Parameters.GIVE_UP_TURNS + 1) {
-				pileIterator = (pileIterator + 1) % myCompulsiveEater.getPilesBelowSecondaryThreshold().size();
+			pileIterator = (pileIterator + 1) % myCompulsiveEater.getPilesBelowSecondaryThreshold().size();
 				if (stopRecursiveInfiniteLoop==0) {
 					int[] offered = new int[intColorNum];
 					int[] desired = new int[intColorNum];
@@ -170,19 +166,86 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 				
 				stopRecursiveInfiniteLoop--;
 				return getHoardingOffer();
+		}
+		
+		if (lastTradeAway!=tradeAway) {
+			initialInventory = myCompulsiveEater.getAIntInHand()[tradeAway];
+			turnCounter=0;
+			lastAmount = -1;
+		} else if (!alternativeMode) {
+			turnCounter++;
+			
+			if (turnCounter>=Parameters.GIVE_UP_TURNS &&
+					initialInventory - myCompulsiveEater.getAIntInHand()[tradeAway] < Parameters.GIVE_UP_TURNS + 1) {
+				pileIterator = (pileIterator + 1) % myCompulsiveEater.getPilesBelowSecondaryThreshold().size();
+				if (stopRecursiveInfiniteLoop==0) {
+					int[] offered = new int[intColorNum];
+					int[] desired = new int[intColorNum];
+					
+					for (int i = 0; i < intColorNum; i++) {
+						offered[i]=0;
+						desired[i]=0;
+					}
+					
+					Offer o = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
+					o.setOffer(offered, desired);
+					return o;
+				}
+				
+				stopRecursiveInfiniteLoop--;
+				System.out.println("TRY NEW COLOR");
+				return getHoardingOffer();
 			}
 		}
 		
 		stopRecursiveInfiniteLoop = 10;
 		
+		
+		
 		int amount = 0;
+		//new color chosen
 		if (lastAmount == -1) {
-			amount = Math.max(myCompulsiveEater.getAIntInHand()[tradeAway] / 4, 0); //changed - possibly we are done w that color
+			amount = Math.max(myCompulsiveEater.getAIntInHand()[tradeAway] / Parameters.BIG_AMOUNT_DIVISOR, 0); //changed - possibly we are done w that color
 		} else {
-			amount = Math.min(lastAmount*5/4, myCompulsiveEater.getAIntInHand()[tradeAway]);
+			
+			int netChange = prevInventory - myCompulsiveEater.getAIntInHand()[tradeAway];
+		
+			System.out.println("NET CHANGE: " + netChange);
+			
+			if (prevInventory!=-1 && netChange < lastAmount) {
+				System.out.println("RETRY COLOR");
+				System.out.println("TURN COUNTER: " + turnCounter);
+				amount = Math.max(lastAmount / 2, 1);
+			} else {
+				if (netChange==0 && myCompulsiveEater.getPilesBelowSecondaryThreshold().size()!=0) {
+					lastAmount=-1;
+					pileIterator = (pileIterator + 1) % myCompulsiveEater.getPilesBelowSecondaryThreshold().size();
+						if (stopRecursiveInfiniteLoop==0) {
+							int[] offered = new int[intColorNum];
+							int[] desired = new int[intColorNum];
+							
+							for (int i = 0; i < intColorNum; i++) {
+								offered[i]=0;
+								desired[i]=0;
+							}
+							
+							Offer o = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
+							o.setOffer(offered, desired);
+							return o;
+						}
+						
+						stopRecursiveInfiniteLoop--;
+						return getHoardingOffer();
+				}
+				
+				System.out.println("OFFER WENT THROUGH");
+				turnCounter = 0;
+				amount = Math.min(Math.max(lastAmount*3/2, lastAmount+1), myCompulsiveEater.getAIntInHand()[tradeAway]);
+			}
 		}
 		
 		lastAmount = amount;
+		prevInventory = myCompulsiveEater.getAIntInHand()[tradeAway];
 		lastTradeAway = tradeAway;
 		
 		int[] offered = new int[intColorNum];
