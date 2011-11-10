@@ -195,6 +195,7 @@ public class CompulsiveEater extends Player
 			tasteDiff *= 4.0;
 			double inventoryDiff = 3.0 * (aintInHand[target] - aintInHand[back]) / totalSkittles;
 			double liquidity = 1.0 * (aintInHand[target] - initialTargetInventory) / aintInHand[target]; 
+			System.out.println("taste diff: " + tasteDiff + "inv diff: " + inventoryDiff + "liquidity: " +liquidity);
 			if(tasteDiff - inventoryDiff - liquidity > .15){
 				target = back;
 				initialTargetInventory = piles.get(discoveryIndex).getFront();
