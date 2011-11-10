@@ -20,6 +20,8 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 	private int initialInventory = 0;
 	private int pileIterator = 0;
 	
+	private int stopRecursiveInfiniteLoop = 10;
+	
 	private boolean alternativeMode = false;
 	
 	public OfferGeneratorImplementer(){
@@ -147,9 +149,23 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 			if (turnCounter>=Parameters.GIVE_UP_TURNS &&
 					myCompulsiveEater.getAIntInHand()[tradeAway] - initialInventory < Parameters.GIVE_UP_TURNS + 1) {
 				pileIterator = (pileIterator + 1) % myCompulsiveEater.getPilesBelowSecondaryThreshold().size();
+				if (stopRecursiveInfiniteLoop==0) {
+					int[] offered = new int[intColorNum];
+					int[] desired = new int[intColorNum];
+					
+					for (int i = 0; i < intColorNum; i++) {
+						offered[i]=0;
+						desired[i]=0;
+					}
+					
+				}
+				
+				stopRecursiveInfiniteLoop--;
 				return getHoardingOffer();
 			}
 		}
+		
+		stopRecursiveInfiniteLoop = 10;
 		
 		int amount = 0;
 		if (lastAmount == -1) {
