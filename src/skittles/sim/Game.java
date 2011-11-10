@@ -5,7 +5,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -25,12 +24,10 @@ public class Game
 	private int intPlayerNum;
 	private int intColorNum;
 	
-	private double storedScore = 0;
-	
-	public int rank;
-	
 	private Offer[] aoffCurrentOffers = null;
 	private int[][] aintCurrentEats = null;
+	
+	private double dblTasteMean;
 	
 	public static Scanner scnInput = new Scanner( System.in );
 	
@@ -96,11 +93,12 @@ public class Game
 				else
 				{
 					double dblMean = Double.parseDouble( astrTastes[ 1 ] );
+					this.dblTasteMean = dblMean;
 					adblTastes = randomTastes( dblMean );
 					System.out.println( "Random color happiness:" );
 					for ( int intColorIndex = 0; intColorIndex < intColorNum; intColorIndex ++ )
 					{
-						System.out.print( adblTastes[ intColorIndex ] );
+						System.out.print( adblTastes[ intColorIndex ] + " " );
 					}
 					System.out.println();
 				}
@@ -141,7 +139,7 @@ public class Game
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				plyNew.initialize( intPlayerNum, i, strPlayerClass, aintInHand.clone() );
+				plyNew.initialize( intPlayerNum, dblTasteMean, i, strPlayerClass, aintInHand.clone() );
 				alPlayers.add( plyNew );
 				PlayerStatus plsTemp = new PlayerStatus( i, strPlayerClass, aintInHand.clone(), adblTastes.clone() );
 				alPlayerStatus.add( plsTemp );
@@ -149,10 +147,6 @@ public class Game
 		}
 		aplyPlayers = alPlayers.toArray( new Player[ 0 ] );
 		aplsPlayerStatus = alPlayerStatus.toArray( new PlayerStatus[ 0 ] );	
-	}
-	
-	public double storedScore() {
-		return storedScore;
 	}
 	
 	public void runGame()
@@ -189,35 +183,15 @@ public class Game
 			logGame( abfwPortfolio, "H" );
 			logGame( abfwPortfolio, "N" );
 		}
-		double dblAver = 0;
+		double dblTotal = 0;
 		for ( PlayerStatus plsTemp : aplsPlayerStatus )
 		{
-			dblAver += plsTemp.getHappiness();
+			dblTotal += plsTemp.getHappiness();
 		}
-		dblAver = dblAver / intPlayerNum;
-		
-		ArrayList<Double> allScores = new ArrayList<Double>();
-		
 		for ( PlayerStatus plsTemp : aplsPlayerStatus )
 		{
-			double dblTempHappy = plsTemp.getHappiness() + dblAver;
+			double dblTempHappy = ( plsTemp.getHappiness() + ( dblTotal - plsTemp.getHappiness() ) / ( intPlayerNum - 1 ) ) / 2;
 			System.out.println( "Player #" + plsTemp.getPlayerIndex() + "'s happiness is: " + dblTempHappy );
-			allScores.add(dblTempHappy);
-			
-			if (aplyPlayers[plsTemp.getPlayerIndex()].getClassName().equals("CompulsiveEater"))
-				storedScore = dblTempHappy;
-		}
-		
-		Collections.sort(allScores);
-		Collections.reverse(allScores);
-		
-		rank = 1;
-		
-		for (double curScore : allScores) {
-			if (curScore==storedScore) {
-				break;
-			}
-			rank++;
 		}
 		
 		try {
@@ -451,7 +425,6 @@ public class Game
 				alCurrentOffers.add( offTemp );
 				continue;
 			}
-			aplyPlayers[ intPlayerIndex ].syncInHand(aplsPlayerStatus[intPlayerIndex].getInHand());
 			aplyPlayers[ intPlayerIndex ].eat( aintTempEat );
 			// process eat
 			if ( aplsPlayerStatus[ intPlayerIndex ].checkCanEat( aintTempEat ) )
@@ -476,19 +449,6 @@ public class Game
 			else
 			{
 				System.out.println( "Player #" + intPlayerIndex + ": Invalid offer. Shame on you :)" );
-
-				/*System.out.print("offer: ");
-				for (int i=0; i<intColorNum; i++){
-					System.out.print(offTemp.getOffer()[i] + ", ");
-				}
-				System.out.println();
-				System.out.print("desire: ");
-				for (int j=0; j<intColorNum; j++){
-					System.out.print(offTemp.getDesire()[j] + ", ");
-				}*/
-
-				System.out.println(offTemp.toString());
-
 				Offer offEmpty = new Offer( intPlayerIndex, intColorNum );
 				alCurrentOffers.add( offEmpty );
 			}

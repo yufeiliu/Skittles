@@ -37,6 +37,8 @@ public class CompulsiveEater extends Player
 	private ArrayList<Pair<Integer, Integer>> pilesBelowSecondaryThreshold = new ArrayList<Pair<Integer, Integer>>(); 
 	
 	
+	public double mean;
+	
 	//===== EVERYTHING BELOW CAME FROM DumpPlayer ====
 	private int[] aintInHand;
 	private int intColorNum;
@@ -133,7 +135,7 @@ public class CompulsiveEater extends Player
 				if(aintInHand[i] == 0){
 					continue;
 				}
-				if(Math.abs(adblTastes[i]) < minDistanceFromZero && adblTastes[i] < Parameters.SECONDARY_THRESHOLD){
+				if(Math.abs(adblTastes[i]) < minDistanceFromZero && adblTastes[i] < mean){
 					minDistanceFromZero = Math.abs(adblTastes[i]); 
 					minTasteIndex = i;
 				}
@@ -174,7 +176,7 @@ public class CompulsiveEater extends Player
 	}*/
 	
 	private void refreshCreateBelowSecondaryOrdering(){
-		if(adblTastes[intLastEatIndex] < Parameters.SECONDARY_THRESHOLD)
+		if(adblTastes[intLastEatIndex] < mean)
 			pilesBelowSecondaryThreshold.add(new Pair<Integer, Integer>(aintInHand[intLastEatIndex], intLastEatIndex));
 		Collections.sort(pilesBelowSecondaryThreshold);
 	}
@@ -182,7 +184,7 @@ public class CompulsiveEater extends Player
 	private void refreshTargetColor(){
 		int back = piles.get(discoveryIndex).getBack();
 		if(target == -1){
-			if(adblTastes[back] >= Parameters.PRIMARY_THRESHOLD){
+			if(adblTastes[back] >= Parameters.PRIMARY_THRESHOLD + mean){
 				target = back;
 				initialTargetInventory = piles.get(discoveryIndex).getFront();
 			}
@@ -302,12 +304,13 @@ public class CompulsiveEater extends Player
 	}
 
 	@Override
-	public void initialize(int intPlayerNum, int intPlayerIndex, String strClassName,	int[] aintInHand) 
+	public void initialize(int intPlayerNum, double mean, int intPlayerIndex, String strClassName,	int[] aintInHand) 
 	{
 		this.intPlayerIndex = intPlayerIndex;
 		this.strClassName = strClassName;
 		this.aintInHand = aintInHand;
 		this.playerNum = intPlayerNum;
+		this.mean = mean;
 		intColorNum = aintInHand.length;
 		turnsEatenSame = 0;
 		turnCounter = -1;
@@ -320,11 +323,11 @@ public class CompulsiveEater extends Player
 		discovery = true;
 		adblTastes = new double[ intColorNum ];
 		
-		offerGen = new OfferGeneratorImplementer(intColorNum);
-		offerGen.setPlayer(this);
-		
 		prefEval = new PreferenceEvaluatorImpl(intColorNum);
 		prefEval.setPlayer(this);
+		
+		offerGen = new OfferGeneratorImplementer(intColorNum);
+		offerGen.setPlayer(this);
 		
 		offerEval = new CompulsiveOfferEvaluator();
 		offerEval.setPlayer(this);
