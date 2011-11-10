@@ -192,9 +192,10 @@ public class CompulsiveEater extends Player
 		
 		//TODO: Tweak these params
 		if((tasteDiff = adblTastes[back] - adblTastes[target]) > 0){
-			double inventoryDiff = 5.0 * (aintInHand[target] - aintInHand[back]) / totalSkittles;
+			tasteDiff *= 2.5;
+			double inventoryDiff = 3.0 * (aintInHand[target] - aintInHand[back]) / totalSkittles;
 			double liquidity = 1.0 * (aintInHand[target] - initialTargetInventory) / aintInHand[target]; 
-			if((tasteDiff - inventoryDiff + liquidity) / 3 > .5){
+			if(tasteDiff - inventoryDiff - liquidity > .15){
 				target = back;
 				initialTargetInventory = piles.get(discoveryIndex).getFront();
 			}
