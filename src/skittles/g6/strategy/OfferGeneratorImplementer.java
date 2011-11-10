@@ -158,6 +158,9 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 						desired[i]=0;
 					}
 					
+					Offer o = new Offer(myCompulsiveEater.getPlayerIndex(), intColorNum);
+					o.setOffer(offered, desired);
+					return o;
 				}
 				
 				stopRecursiveInfiniteLoop--;

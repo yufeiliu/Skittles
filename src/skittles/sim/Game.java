@@ -24,6 +24,8 @@ public class Game
 	private int intPlayerNum;
 	private int intColorNum;
 	
+	private double storedScore = 0;
+	
 	private Offer[] aoffCurrentOffers = null;
 	private int[][] aintCurrentEats = null;
 	
@@ -146,6 +148,10 @@ public class Game
 		aplsPlayerStatus = alPlayerStatus.toArray( new PlayerStatus[ 0 ] );	
 	}
 	
+	public double storedScore() {
+		return storedScore;
+	}
+	
 	public void runGame()
 	{
 		FileWriter[] afrtPortfolio = new FileWriter[ intPlayerNum ];
@@ -190,6 +196,8 @@ public class Game
 		{
 			double dblTempHappy = plsTemp.getHappiness() + dblAver;
 			System.out.println( "Player #" + plsTemp.getPlayerIndex() + "'s happiness is: " + dblTempHappy );
+			if (aplyPlayers[plsTemp.getPlayerIndex()].getClassName().equals("CompulsiveEater"))
+				storedScore = dblTempHappy;
 		}
 		
 		try {
