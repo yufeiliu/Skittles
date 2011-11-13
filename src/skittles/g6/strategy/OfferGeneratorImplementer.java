@@ -199,7 +199,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		}
 		
 		//tradeAway can't be target
-		if (tradeAway == target) {
+		if (tradeAway == target && myCompulsiveEater.getPilesBelowSecondaryThreshold().size() != 0) {
 			turnCounter++;
 			pileIterator = (pileIterator + 1) % myCompulsiveEater.getPilesBelowSecondaryThreshold().size();
 				if (stopRecursiveInfiniteLoop==0) {
@@ -227,7 +227,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		} else if (!alternativeMode) {
 			turnCounter++;
 			
-			if (turnCounter>=Parameters.GIVE_UP_TURNS &&
+			if (turnCounter>=Parameters.GIVE_UP_TURNS && myCompulsiveEater.getPilesBelowSecondaryThreshold().size() != 0 &&
 					initialInventory - myCompulsiveEater.getAIntInHand()[tradeAway] < Parameters.GIVE_UP_TURNS + 1) {
 				pileIterator = (pileIterator + 1) % myCompulsiveEater.getPilesBelowSecondaryThreshold().size();
 				if (stopRecursiveInfiniteLoop==0) {
@@ -352,12 +352,12 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 			return getHoardingOffer();
 		}
 				
-		Pair<Integer, Integer> currentColor = piles.get(currentTurn);
+		Pair<Integer, Integer> currentColor = piles.get(currentTurn % piles.size());
 		
 		if (currentTurn == 0){ //if first turn	
 		//can maybe combine turn 0 with turn 1 to turn intColorNum-1
 			if (myCompulsiveEater.getPreferences()[lastEatIndex] < myCompulsiveEater.mean){
-				Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
+				Pair<Integer, Integer> nextColor = piles.get((currentTurn + 1) % piles.size());
 				tradeAmount = currentColor.getFront()/Parameters.BIG_AMOUNT_DIVISOR;
 				aintOffer[currentColor.getBack()] = tradeAmount;
 				aintDesire[nextColor.getBack()] = tradeAmount;
@@ -368,7 +368,7 @@ public class OfferGeneratorImplementer implements OfferGenerator{
 		}
 		else if (currentTurn>=1 && currentTurn<intColorNum-1){
 			if (myCompulsiveEater.getPreferences()[lastEatIndex] < myCompulsiveEater.mean){
-				Pair<Integer, Integer> nextColor = piles.get(currentTurn + 1);
+				Pair<Integer, Integer> nextColor = piles.get((currentTurn + 1) % piles.size());
 				//if (pilesBelowSecondaryThreshold.size()>0){
 					tradeAmount = pilesBelowSecondaryThreshold.get(0).getFront()/Parameters.BIG_AMOUNT_DIVISOR;
 					aintOffer[pilesBelowSecondaryThreshold.get(0).getBack()] = tradeAmount;
